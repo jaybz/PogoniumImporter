@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Green App Theme -->
+  <style name="Theme.Custom" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- AppCompat Attributes -->
+    <item name="colorPrimary">@color/material_green_400</item>
+    <item name="colorPrimaryDark">@color/material_green_600</item>
+    <item name="colorAccent">@color/material_green_A400</item>
+    
+    <!-- AppCompat Control Attributes -->
+    <item name="colorButtonNormal">@color/material_green_400</item>
+    <item name="colorControlNormal">@color/material_green_400</item>
+    <item name="colorControlActivated">@color/material_green_400</item>
+    <item name="colorControlHighlight">@color/material_green_A400</item>
+
+    <!-- AppCompat Dialog Attributes -->
+    <item name="dialogTheme">@style/Theme.Custom.Dialog</item>
+    <item name="alertDialogTheme">@style/Theme.Custom.Dialog</item>
+  </style>
+
+  <!-- Green Dialog Theme -->
+  <style name="Theme.Custom.Dialog" parent="Theme.AppCompat.Light.Dialog">
+    <item name="colorPrimary">@color/material_green_400</item>
+    <item name="colorPrimaryDark">@color/material_green_600</item>
+    <item name="colorAccent">@color/material_green_A400</item>
+  </style>
+</resources>

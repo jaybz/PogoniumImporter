@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="appName">Pogonium Importer</string>
+  <string name="settingsTitle">Pogonium Importer Settings</string>
+  <string name="passcodeLabel">Pogonium Passcode</string>
+  <string name="passcodeHint">Enter your passcode here</string>
+  <string name="shareTitle">Pogonium Importer</string>
+  <string name="cancelButton">Cancel</string>
+  <string name="importButton">Import</string>
+  <string name="invalidJson">Received data is invalid</string>
+  <string name="level">Level</string>
+  <string name="atk">ATK</string>
+  <string name="def">DEF</string>
+  <string name="sta">STA</string>
+  <string name="iv">IV</string>
+  <string name="updatedPokemon">Updated Pokemon</string>
+  <string name="addedPokemon">Added Pokemon</string>
+  <string name="requestError">Request Error</string>
+  <string name="Dismiss">Dismiss</string>
+  <string name="quickMove">Quick Move</string>
+  <string name="chargeMove">Charge Move</string>
+  <string name="dialogPermissionsTitle">Check permissions</string>
+  <string name="dialogPermissionsMessage">This app requires permission to draw over other apps to work properly. Please enable this app on the next screen.</string>
+  <string name="dialogProceed">Proceed</string>
+  <string name="dialogCancel">Cancel</string>
+</resources>
