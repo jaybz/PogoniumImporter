@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="appName">Pogonium Importer</string>
+  <string name="appName">Pogonium Importer</string>
+  <string name="notificationText">You can block this notification. This contains no useful information. This is here just to prevent the OS from killing the overlay on low memory situations.</string>
   <string name="settingsTitle">Pogonium Importer Settings</string>
   <string name="passcodeLabel">Pogonium Passcode</string>
   <string name="passcodeHint">Enter your passcode here</string>

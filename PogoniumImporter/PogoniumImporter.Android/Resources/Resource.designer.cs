@@ -3644,8 +3644,8 @@ namespace PogoniumImporter.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f080039
-			public const int Dismiss = 2131230777;
+			// aapt resource value: 0x7f08003a
+			public const int Dismiss = 2131230778;
 			
 			// aapt resource value: 0x7f080000
 			public const int abc_action_bar_home_description = 2131230720;
@@ -3740,8 +3740,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f080012
 			public const int abc_toolbar_collapse_description = 2131230738;
 			
-			// aapt resource value: 0x7f080037
-			public const int addedPokemon = 2131230775;
+			// aapt resource value: 0x7f080038
+			public const int addedPokemon = 2131230776;
 			
 			// aapt resource value: 0x7f080029
 			public const int appName = 2131230761;
@@ -3749,53 +3749,56 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f080021
 			public const int appbar_scrolling_view_behavior = 2131230753;
 			
-			// aapt resource value: 0x7f080032
-			public const int atk = 2131230770;
+			// aapt resource value: 0x7f080033
+			public const int atk = 2131230771;
 			
 			// aapt resource value: 0x7f080022
 			public const int bottom_sheet_behavior = 2131230754;
 			
-			// aapt resource value: 0x7f08002e
-			public const int cancelButton = 2131230766;
+			// aapt resource value: 0x7f08002f
+			public const int cancelButton = 2131230767;
 			
 			// aapt resource value: 0x7f080023
 			public const int character_counter_pattern = 2131230755;
 			
-			// aapt resource value: 0x7f08003b
-			public const int chargeMove = 2131230779;
-			
-			// aapt resource value: 0x7f080033
-			public const int def = 2131230771;
-			
-			// aapt resource value: 0x7f08003f
-			public const int dialogCancel = 2131230783;
-			
-			// aapt resource value: 0x7f08003d
-			public const int dialogPermissionsMessage = 2131230781;
-			
 			// aapt resource value: 0x7f08003c
-			public const int dialogPermissionsTitle = 2131230780;
+			public const int chargeMove = 2131230780;
+			
+			// aapt resource value: 0x7f080034
+			public const int def = 2131230772;
+			
+			// aapt resource value: 0x7f080040
+			public const int dialogCancel = 2131230784;
 			
 			// aapt resource value: 0x7f08003e
-			public const int dialogProceed = 2131230782;
+			public const int dialogPermissionsMessage = 2131230782;
 			
-			// aapt resource value: 0x7f08002f
-			public const int importButton = 2131230767;
+			// aapt resource value: 0x7f08003d
+			public const int dialogPermissionsTitle = 2131230781;
+			
+			// aapt resource value: 0x7f08003f
+			public const int dialogProceed = 2131230783;
 			
 			// aapt resource value: 0x7f080030
-			public const int invalidJson = 2131230768;
-			
-			// aapt resource value: 0x7f080035
-			public const int iv = 2131230773;
+			public const int importButton = 2131230768;
 			
 			// aapt resource value: 0x7f080031
-			public const int level = 2131230769;
+			public const int invalidJson = 2131230769;
+			
+			// aapt resource value: 0x7f080036
+			public const int iv = 2131230774;
+			
+			// aapt resource value: 0x7f080032
+			public const int level = 2131230770;
+			
+			// aapt resource value: 0x7f08002a
+			public const int notificationText = 2131230762;
+			
+			// aapt resource value: 0x7f08002d
+			public const int passcodeHint = 2131230765;
 			
 			// aapt resource value: 0x7f08002c
-			public const int passcodeHint = 2131230764;
-			
-			// aapt resource value: 0x7f08002b
-			public const int passcodeLabel = 2131230763;
+			public const int passcodeLabel = 2131230764;
 			
 			// aapt resource value: 0x7f080024
 			public const int password_toggle_content_description = 2131230756;
@@ -3812,29 +3815,29 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f080028
 			public const int path_password_strike_through = 2131230760;
 			
-			// aapt resource value: 0x7f08003a
-			public const int quickMove = 2131230778;
+			// aapt resource value: 0x7f08003b
+			public const int quickMove = 2131230779;
 			
-			// aapt resource value: 0x7f080038
-			public const int requestError = 2131230776;
+			// aapt resource value: 0x7f080039
+			public const int requestError = 2131230777;
 			
 			// aapt resource value: 0x7f080013
 			public const int search_menu_title = 2131230739;
 			
-			// aapt resource value: 0x7f08002a
-			public const int settingsTitle = 2131230762;
+			// aapt resource value: 0x7f08002b
+			public const int settingsTitle = 2131230763;
 			
-			// aapt resource value: 0x7f08002d
-			public const int shareTitle = 2131230765;
+			// aapt resource value: 0x7f08002e
+			public const int shareTitle = 2131230766;
 			
-			// aapt resource value: 0x7f080034
-			public const int sta = 2131230772;
+			// aapt resource value: 0x7f080035
+			public const int sta = 2131230773;
 			
 			// aapt resource value: 0x7f080014
 			public const int status_bar_notification_info_overflow = 2131230740;
 			
-			// aapt resource value: 0x7f080036
-			public const int updatedPokemon = 2131230774;
+			// aapt resource value: 0x7f080037
+			public const int updatedPokemon = 2131230775;
 			
 			static String()
 			{

@@ -21,6 +21,8 @@ namespace PogoniumImporter.Droid
     [Activity(Theme = "@style/Theme.Custom.Dialog")]
     class ShareService : Service
     {
+        public const int ServiceNotificationId = 76778;
+
         private LinearLayout shareLayout;
         private IWindowManager windowManager;
 
@@ -44,6 +46,16 @@ namespace PogoniumImporter.Droid
 
             if (importedPokemon != null)
             {
+                Notification notification = new Notification.Builder(this)
+                    .SetContentTitle(Resources.GetString(Resource.String.appName))
+                    .SetContentText(Resources.GetString(Resource.String.notificationText))
+                    .SetSmallIcon(Resource.Drawable.Icon)
+                    .SetContentIntent(PendingIntent.GetActivity(Application.Context, 0, new Intent(), 0))
+                    .SetOngoing(true)
+                    .Build();
+
+                StartForeground(ServiceNotificationId, notification);
+
                 this.windowManager = GetSystemService(WindowService).JavaCast<IWindowManager>();
 
                 WindowManagerLayoutParams shareLayoutParams = new WindowManagerLayoutParams(
