@@ -51,7 +51,9 @@ namespace PogoniumImporter.Droid
                 Helpers.Settings.PogoniumPasscode = e.Text.ToString();
             };
 
+#if DEBUG
             Button shareButtonOld = FindViewById<Button>(Resource.Id.testShareOld);
+            shareButtonOld.Visibility = ViewStates.Visible;
             shareButtonOld.Click += (object sender, EventArgs e) =>
             {
                 Intent shareIntent = new Intent();
@@ -63,6 +65,7 @@ namespace PogoniumImporter.Droid
             };
 
             Button shareButtonNew = FindViewById<Button>(Resource.Id.testShareNew);
+            shareButtonNew.Visibility = ViewStates.Visible;
             shareButtonNew.Click += (object sender, EventArgs e) =>
             {
                 Intent shareIntent = new Intent();
@@ -72,6 +75,7 @@ namespace PogoniumImporter.Droid
                 shareIntent.SetFlags(ActivityFlags.NewTask);
                 StartActivity(shareIntent);
             };
+#endif
         }
     }
 }
