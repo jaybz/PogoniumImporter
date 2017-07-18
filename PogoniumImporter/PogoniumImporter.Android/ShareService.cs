@@ -100,7 +100,7 @@ namespace PogoniumImporter.Droid
                     quickMovesList.Add(moveName);
                 }                
                 Spinner quickMoves = this.shareLayout.FindViewById<Spinner>(Resource.Id.quickMoveSpinner);
-                ArrayAdapter<string> quickMoveAdapter = new ArrayAdapter<string>(quickMoves.Context, Android.Resource.Layout.SimpleSpinnerItem, quickMovesList);
+                ArrayAdapter<string> quickMoveAdapter = new ArrayAdapter<string>(quickMoves.Context, Resource.Layout.MoveSpinnerItem, quickMovesList);
                 quickMoves.Adapter = quickMoveAdapter;
                 quickMoves.SetSelection(quickMoveAdapter.GetPosition(quickMovesList[0]));
 
@@ -113,7 +113,7 @@ namespace PogoniumImporter.Droid
                     chargeMovesList.Add(moveName);
                 }
                 Spinner chargeMoves = this.shareLayout.FindViewById<Spinner>(Resource.Id.chargeMoveSpinner);
-                ArrayAdapter<string> chargeMoveAdapter = new ArrayAdapter<string>(chargeMoves.Context, Android.Resource.Layout.SimpleSpinnerItem, chargeMovesList);
+                ArrayAdapter<string> chargeMoveAdapter = new ArrayAdapter<string>(chargeMoves.Context, Resource.Layout.MoveSpinnerItem, chargeMovesList);
                 chargeMoves.Adapter = chargeMoveAdapter;
                 chargeMoves.SetSelection(chargeMoveAdapter.GetPosition(chargeMovesList[0]));
 
