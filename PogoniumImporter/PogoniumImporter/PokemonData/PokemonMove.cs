@@ -111,7 +111,11 @@ namespace PogoniumImporter.PokemonData
         [Display(Name = "BRINE", Description = "Brine")] Brine = 104,
         [Display(Name = "WATER_PULSE", Description = "Water Pulse")] WaterPulse = 105,
         [Display(Name = "SCALD", Description = "Scald")] Scald = 106,
+#if DEBUG
+        [Display(Name = "HYDRO_PUMP", Description = "Hydro Pump Long Name For Debugging")] HydroPump = 107,
+#else
         [Display(Name = "HYDRO_PUMP", Description = "Hydro Pump")] HydroPump = 107,
+#endif
         [Display(Name = "PSYCHIC", Description = "Psychic")] Psychic = 108,
         [Display(Name = "PSYSTRIKE", Description = "Psystrike")] Psystrike = 109,
         [Display(Name = "ICE_SHARD", Description = "Ice Shard")] IceShard = 110,
@@ -144,7 +148,11 @@ namespace PogoniumImporter.PokemonData
         [Display(Name = "WRAP_PINK", Description = "Wrap Pink")] WrapPink = 137,
         [Display(Name = "FURY_CUTTER", Description = "Fury Cutter")] FuryCutterFast = 200,
         [Display(Name = "BUG_BITE", Description = "Bug Bite")] BugBiteFast = 201,
+#if DEBUG
+        [Display(Name = "BITE", Description = "Bite Long Name For Debugging")] BiteFast = 202,
+#else
         [Display(Name = "BITE", Description = "Bite")] BiteFast = 202,
+#endif
         [Display(Name = "SUCKER_PUNCH", Description = "Sucker Punch")] SuckerPunchFast = 203,
         [Display(Name = "DRAGON_BREATH", Description = "Dragon Breath")] DragonBreathFast = 204,
         [Display(Name = "THUNDER_SHOCK", Description = "Thunder Shock")] ThunderShockFast = 205,
