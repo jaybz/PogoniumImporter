@@ -175,8 +175,8 @@ namespace PogoniumImporter.Droid
                     }
                     catch (System.Exception e)
                     {
-                        Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(this);
-                        alert.SetTitle(Resources.GetString(Resource.String.requestError));
+                        Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(new ContextThemeWrapper(this,Resource.Style.Theme_AppCompat_Light_Dialog));
+                        alert.SetTitle(Resources.GetString(Resource.String.importError));
                         alert.SetMessage(e.Message);
                         alert.SetPositiveButton(Resources.GetString(Resource.String.Dismiss), (senderAlert, args) => {
                         });
@@ -188,9 +188,25 @@ namespace PogoniumImporter.Droid
                 };
 
                 // hacky way to not block UI
-                importButton.TextChanged += async (object sender, Android.Text.TextChangedEventArgs e) =>
+                importButton.TextChanged += async (object sender, Android.Text.TextChangedEventArgs ev) =>
                 {
-                    await importedPokemon.RetrieveData(passcode);
+                    try
+                    {
+                        throw new System.Exception("testing exception");
+                        await importedPokemon.RetrieveData(passcode);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(new ContextThemeWrapper(this, Resource.Style.Theme_AppCompat_Light_Dialog));
+                        alert.SetTitle(Resources.GetString(Resource.String.importError));
+                        alert.SetMessage(e.Message);
+                        alert.SetPositiveButton(Resources.GetString(Resource.String.Dismiss), (senderAlert, args) => {
+                            StopService(intent);
+                        });
+                        Dialog alertDialog = alert.Create();
+                        alertDialog.Window.SetType(WindowManagerTypes.SystemAlert);
+                        alertDialog.Show();
+                    }
                     processingBar.Visibility = ViewStates.Gone;
                     importButton.Enabled = true;
                     pokeName.Text = importedPokemon.Name;

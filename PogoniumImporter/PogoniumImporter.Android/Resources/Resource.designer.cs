@@ -3800,6 +3800,9 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f080030
 			public const int importButton = 2131230768;
 			
+			// aapt resource value: 0x7f080039
+			public const int importError = 2131230777;
+			
 			// aapt resource value: 0x7f080031
 			public const int invalidJson = 2131230769;
 			
@@ -3835,9 +3838,6 @@ namespace PogoniumImporter.Droid
 			
 			// aapt resource value: 0x7f08003b
 			public const int quickMove = 2131230779;
-			
-			// aapt resource value: 0x7f080039
-			public const int requestError = 2131230777;
 			
 			// aapt resource value: 0x7f080013
 			public const int search_menu_title = 2131230739;

@@ -16,7 +16,7 @@
   <string name="iv">IV</string>
   <string name="updatedPokemon">Updated Pokemon</string>
   <string name="addedPokemon">Added Pokemon</string>
-  <string name="requestError">Request Error</string>
+  <string name="importError">Import Error</string>
   <string name="Dismiss">Dismiss</string>
   <string name="quickMove">Quick Move</string>
   <string name="chargeMove">Charge Move</string>
