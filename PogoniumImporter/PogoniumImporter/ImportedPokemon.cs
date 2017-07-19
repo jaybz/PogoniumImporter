@@ -170,7 +170,21 @@ namespace PogoniumImporter
                 unsortedIvCombinations = GetIVCombinations(jsonValue["Cp"], hp);
             }
 
-            if(unsortedIvCombinations != null)
+            if (jsonValue.ContainsKey("AtkMin") && jsonValue["AtkMin"].JsonType == JsonType.Number &&
+                jsonValue.ContainsKey("DefMin") && jsonValue["DefMin"].JsonType == JsonType.Number &&
+                jsonValue.ContainsKey("StamMin") && jsonValue["StamMin"].JsonType == JsonType.Number &&
+                jsonValue.ContainsKey("AtkMax") && jsonValue["AtkMax"].JsonType == JsonType.Number &&
+                jsonValue.ContainsKey("DefMax") && jsonValue["DefMax"].JsonType == JsonType.Number &&
+                jsonValue.ContainsKey("StamMax") && jsonValue["StamMax"].JsonType == JsonType.Number &&
+                (int)jsonValue["AtkMin"] == (int)jsonValue["AtkMax"] &&
+                (int)jsonValue["DefMin"] == (int)jsonValue["DefMax"] &&
+                (int)jsonValue["StamMin"] == (int)jsonValue["StamMax"])
+            {
+                Attack = jsonValue["AtkMin"];
+                Defense = jsonValue["DefMin"];
+                Stamina = jsonValue["StamMin"];
+            }
+            else if(unsortedIvCombinations != null)
             {
                 ivCombinations = unsortedIvCombinations.OrderBy(o => o.Percent).ToList();
                 IvCombination lowestIvCombination = ivCombinations[0];

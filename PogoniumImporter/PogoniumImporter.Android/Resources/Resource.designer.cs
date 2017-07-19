@@ -2809,26 +2809,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020069
-			public const int avd_hide_password_1 = 2130837609;
-			
-			// aapt resource value: 0x7f02006a
-			public const int avd_hide_password_2 = 2130837610;
-			
-			// aapt resource value: 0x7f02006b
-			public const int avd_hide_password_3 = 2130837611;
-			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
-			
-			// aapt resource value: 0x7f02006c
-			public const int avd_show_password_1 = 2130837612;
-			
-			// aapt resource value: 0x7f02006d
-			public const int avd_show_password_2 = 2130837613;
-			
-			// aapt resource value: 0x7f02006e
-			public const int avd_show_password_3 = 2130837614;
 			
 			// aapt resource value: 0x7f020055
 			public const int design_bottom_navigation_item_background = 2130837589;
@@ -2984,14 +2966,14 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070028
 			public const int bottom = 2131165224;
 			
-			// aapt resource value: 0x7f0700a2
-			public const int buttonBarLayout1 = 2131165346;
+			// aapt resource value: 0x7f0700a3
+			public const int buttonBarLayout1 = 2131165347;
 			
 			// aapt resource value: 0x7f07004b
 			public const int buttonPanel = 2131165259;
 			
-			// aapt resource value: 0x7f0700a3
-			public const int cancelButton = 2131165347;
+			// aapt resource value: 0x7f0700a4
+			public const int cancelButton = 2131165348;
 			
 			// aapt resource value: 0x7f070083
 			public const int cancel_action = 2131165315;
@@ -3005,8 +2987,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070032
 			public const int center_vertical = 2131165234;
 			
-			// aapt resource value: 0x7f0700a1
-			public const int chargeMoveSpinner = 2131165345;
+			// aapt resource value: 0x7f0700a2
+			public const int chargeMoveSpinner = 2131165346;
 			
 			// aapt resource value: 0x7f07005b
 			public const int checkbox = 2131165275;
@@ -3110,8 +3092,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070046
 			public const int image = 2131165254;
 			
-			// aapt resource value: 0x7f0700a4
-			public const int importButton = 2131165348;
+			// aapt resource value: 0x7f0700a5
+			public const int importButton = 2131165349;
 			
 			// aapt resource value: 0x7f07008c
 			public const int info = 2131165324;
@@ -3137,8 +3119,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070048
 			public const int list_item = 2131165256;
 			
-			// aapt resource value: 0x7f0700a7
-			public const int masked = 2131165351;
+			// aapt resource value: 0x7f0700a8
+			public const int masked = 2131165352;
 			
 			// aapt resource value: 0x7f070085
 			public const int media_actions = 2131165317;
@@ -3185,8 +3167,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070038
 			public const int pin = 2131165240;
 			
-			// aapt resource value: 0x7f0700a5
-			public const int processingBar = 2131165349;
+			// aapt resource value: 0x7f0700a6
+			public const int processingBar = 2131165350;
 			
 			// aapt resource value: 0x7f070006
 			public const int progress_circular = 2131165190;
@@ -3194,29 +3176,29 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070007
 			public const int progress_horizontal = 2131165191;
 			
-			// aapt resource value: 0x7f0700a0
-			public const int quickMoveSpinner = 2131165344;
+			// aapt resource value: 0x7f0700a1
+			public const int quickMoveSpinner = 2131165345;
 			
 			// aapt resource value: 0x7f07005d
 			public const int radio = 2131165277;
 			
-			// aapt resource value: 0x7f07009c
-			public const int resultsAttack = 2131165340;
-			
 			// aapt resource value: 0x7f07009d
-			public const int resultsDefense = 2131165341;
-			
-			// aapt resource value: 0x7f07009f
-			public const int resultsIv = 2131165343;
-			
-			// aapt resource value: 0x7f07009b
-			public const int resultsPokemonLevel = 2131165339;
-			
-			// aapt resource value: 0x7f07009a
-			public const int resultsPokemonName = 2131165338;
+			public const int resultsAttack = 2131165341;
 			
 			// aapt resource value: 0x7f07009e
-			public const int resultsStamina = 2131165342;
+			public const int resultsDefense = 2131165342;
+			
+			// aapt resource value: 0x7f0700a0
+			public const int resultsIv = 2131165344;
+			
+			// aapt resource value: 0x7f07009c
+			public const int resultsPokemonLevel = 2131165340;
+			
+			// aapt resource value: 0x7f07009b
+			public const int resultsPokemonName = 2131165339;
+			
+			// aapt resource value: 0x7f07009f
+			public const int resultsStamina = 2131165343;
 			
 			// aapt resource value: 0x7f070035
 			public const int right = 2131165237;
@@ -3278,8 +3260,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070072
 			public const int select_dialog_listview = 2131165298;
 			
-			// aapt resource value: 0x7f070099
-			public const int shareDialog = 2131165337;
+			// aapt resource value: 0x7f07009a
+			public const int shareDialog = 2131165338;
 			
 			// aapt resource value: 0x7f07005c
 			public const int shortcut = 2131165276;
@@ -3335,11 +3317,14 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070011
 			public const int tabMode = 2131165201;
 			
-			// aapt resource value: 0x7f070098
-			public const int testShareNew = 2131165336;
+			// aapt resource value: 0x7f070099
+			public const int testShareNew = 2131165337;
 			
 			// aapt resource value: 0x7f070097
 			public const int testShareOld = 2131165335;
+			
+			// aapt resource value: 0x7f070098
+			public const int testShareOldRefined = 2131165336;
 			
 			// aapt resource value: 0x7f070094
 			public const int text = 2131165332;
@@ -3398,8 +3383,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f07000e
 			public const int view_offset_helper = 2131165198;
 			
-			// aapt resource value: 0x7f0700a6
-			public const int visible = 2131165350;
+			// aapt resource value: 0x7f0700a7
+			public const int visible = 2131165351;
 			
 			// aapt resource value: 0x7f070027
 			public const int withText = 2131165223;

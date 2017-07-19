@@ -22,6 +22,12 @@
         android:visibility="gone"
         android:id="@+id/testShareOld" />
     <Button
+        android:text="Test Share with old GoIV and appraisal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/testShareOldRefined" />
+    <Button
         android:text="Test Share with new GoIV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

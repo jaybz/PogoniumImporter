@@ -64,6 +64,18 @@ namespace PogoniumImporter.Droid
                 StartActivity(shareIntent);
             };
 
+            Button shareButtonOldRefined = FindViewById<Button>(Resource.Id.testShareOldRefined);
+            shareButtonOldRefined.Visibility = ViewStates.Visible;
+            shareButtonOldRefined.Click += (object sender, EventArgs e) =>
+            {
+                Intent shareIntent = new Intent();
+                shareIntent.SetAction(Intent.ActionSend);
+                shareIntent.PutExtra(Intent.ExtraText, "{\"PokemonId\":130,\"AtkMin\":12,\"AtkMax\":12,\"DefMin\":14,\"DefMax\":14,\"StamMin\":14,\"StamMax\":14,\"OverallPower\":87,\"Hp\":154,\"Cp\":2973,\"estimatedPokemonLevel\":34.5,\"candyName\":\"Magikarp\"}");
+                shareIntent.SetType("application/pokemon-stats");
+                shareIntent.SetFlags(ActivityFlags.NewTask);
+                StartActivity(shareIntent);
+            };
+
             Button shareButtonNew = FindViewById<Button>(Resource.Id.testShareNew);
             shareButtonNew.Visibility = ViewStates.Visible;
             shareButtonNew.Click += (object sender, EventArgs e) =>
