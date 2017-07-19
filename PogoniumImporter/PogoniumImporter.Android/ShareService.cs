@@ -86,7 +86,7 @@ namespace PogoniumImporter.Droid
                 EditText levelText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsPokemonLevel);
                 levelText.Text = string.Format("{0:0.0}", importedPokemon.Level);
                 List<IInputFilter> levelFilters = new List<IInputFilter>(levelText.GetFilters());
-                levelFilters.Add(new MinMaxFilter(0.0f, 40.0f));
+                levelFilters.Add(new MinMaxFilter(1.0f, 39.0f));
                 levelText.SetFilters(levelFilters.ToArray<IInputFilter>());
 
                 EditText atkText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsAttack);
