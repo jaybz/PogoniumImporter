@@ -210,9 +210,7 @@ namespace PogoniumImporter.Droid
                 int.TryParse(defText.Text, out def) &&
                 int.TryParse(staText.Text, out sta))
             {
-                int iv = (int)System.Math.Round(((float)(atk + def + sta) * 100.0f) / 45.0f);
-
-                ivText.Text = string.Format("{0}%", iv);
+                ivText.Text = string.Format("{0}%", ImportedPokemon.ComputeIVPercent(atk, def, sta));
             }
             else
             {
