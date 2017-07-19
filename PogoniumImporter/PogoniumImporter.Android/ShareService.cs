@@ -39,6 +39,15 @@ namespace PogoniumImporter.Droid
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
             string passcode = Helpers.Settings.PogoniumPasscode;
+
+            if(string.IsNullOrEmpty(passcode))
+            {
+                ShowAlert(Resources.GetString(Resource.String.importError), Resources.GetString(Resource.String.noPasscodeError), (senderAlert, args) => {
+                    StopService(intent);
+                });
+                return StartCommandResult.NotSticky;
+            }
+
             string json = intent.GetStringExtra("json") ?? string.Empty;
 
             try
@@ -175,14 +184,8 @@ namespace PogoniumImporter.Droid
                     }
                     catch (System.Exception e)
                     {
-                        Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(new ContextThemeWrapper(this,Resource.Style.Theme_AppCompat_Light_Dialog));
-                        alert.SetTitle(Resources.GetString(Resource.String.importError));
-                        alert.SetMessage(e.Message);
-                        alert.SetPositiveButton(Resources.GetString(Resource.String.Dismiss), (senderAlert, args) => {
-                        });
-                        Dialog alertDialog = alert.Create();
-                        alertDialog.Window.SetType(WindowManagerTypes.SystemAlert);
-                        alertDialog.Show();
+                        ShowAlert(Resources.GetString(Resource.String.importError), e.Message, (senderAlert, args) => { });
+
                     }
                     processingBar.Visibility = ViewStates.Gone;
                 };
@@ -196,15 +199,9 @@ namespace PogoniumImporter.Droid
                     }
                     catch (System.Exception e)
                     {
-                        Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(new ContextThemeWrapper(this, Resource.Style.Theme_AppCompat_Light_Dialog));
-                        alert.SetTitle(Resources.GetString(Resource.String.importError));
-                        alert.SetMessage(e.Message);
-                        alert.SetPositiveButton(Resources.GetString(Resource.String.Dismiss), (senderAlert, args) => {
+                        ShowAlert(Resources.GetString(Resource.String.importError), e.Message, (senderAlert, args) => {
                             StopService(intent);
                         });
-                        Dialog alertDialog = alert.Create();
-                        alertDialog.Window.SetType(WindowManagerTypes.SystemAlert);
-                        alertDialog.Show();
                     }
                     processingBar.Visibility = ViewStates.Gone;
                     importButton.Enabled = true;
@@ -214,6 +211,17 @@ namespace PogoniumImporter.Droid
             }
 
             return StartCommandResult.NotSticky;
+        }
+
+        private void ShowAlert(string title, string message, EventHandler<DialogClickEventArgs> onClick)
+        {
+            Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(new ContextThemeWrapper(this, Resource.Style.Theme_AppCompat_Light_Dialog));
+            alert.SetTitle(title);
+            alert.SetMessage(message);
+            alert.SetPositiveButton(Resources.GetString(Resource.String.Dismiss), onClick);
+            Dialog alertDialog = alert.Create();
+            alertDialog.Window.SetType(WindowManagerTypes.SystemAlert);
+            alertDialog.Show();
         }
 
         private void ComputeIVPercent(TextView atkText, TextView defText, TextView staText, TextView ivText)

@@ -3647,8 +3647,8 @@ namespace PogoniumImporter.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f08003a
-			public const int Dismiss = 2131230778;
+			// aapt resource value: 0x7f08003b
+			public const int Dismiss = 2131230779;
 			
 			// aapt resource value: 0x7f080000
 			public const int abc_action_bar_home_description = 2131230720;
@@ -3764,23 +3764,23 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f080023
 			public const int character_counter_pattern = 2131230755;
 			
-			// aapt resource value: 0x7f08003c
-			public const int chargeMove = 2131230780;
+			// aapt resource value: 0x7f08003d
+			public const int chargeMove = 2131230781;
 			
 			// aapt resource value: 0x7f080034
 			public const int def = 2131230772;
 			
-			// aapt resource value: 0x7f080040
-			public const int dialogCancel = 2131230784;
-			
-			// aapt resource value: 0x7f08003e
-			public const int dialogPermissionsMessage = 2131230782;
-			
-			// aapt resource value: 0x7f08003d
-			public const int dialogPermissionsTitle = 2131230781;
+			// aapt resource value: 0x7f080041
+			public const int dialogCancel = 2131230785;
 			
 			// aapt resource value: 0x7f08003f
-			public const int dialogProceed = 2131230783;
+			public const int dialogPermissionsMessage = 2131230783;
+			
+			// aapt resource value: 0x7f08003e
+			public const int dialogPermissionsTitle = 2131230782;
+			
+			// aapt resource value: 0x7f080040
+			public const int dialogProceed = 2131230784;
 			
 			// aapt resource value: 0x7f080030
 			public const int importButton = 2131230768;
@@ -3796,6 +3796,9 @@ namespace PogoniumImporter.Droid
 			
 			// aapt resource value: 0x7f080032
 			public const int level = 2131230770;
+			
+			// aapt resource value: 0x7f08003a
+			public const int noPasscodeError = 2131230778;
 			
 			// aapt resource value: 0x7f08002a
 			public const int notificationText = 2131230762;
@@ -3821,8 +3824,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f080028
 			public const int path_password_strike_through = 2131230760;
 			
-			// aapt resource value: 0x7f08003b
-			public const int quickMove = 2131230779;
+			// aapt resource value: 0x7f08003c
+			public const int quickMove = 2131230780;
 			
 			// aapt resource value: 0x7f080013
 			public const int search_menu_title = 2131230739;

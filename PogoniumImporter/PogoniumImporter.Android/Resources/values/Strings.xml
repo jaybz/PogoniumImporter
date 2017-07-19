@@ -17,6 +17,7 @@
   <string name="updatedPokemon">Updated Pokemon</string>
   <string name="addedPokemon">Added Pokemon</string>
   <string name="importError">Import Error</string>
+  <string name="noPasscodeError">Please set a passcode first.</string>
   <string name="Dismiss">Dismiss</string>
   <string name="quickMove">Quick Move</string>
   <string name="chargeMove">Charge Move</string>
