@@ -268,6 +268,11 @@ namespace PogoniumImporter
             HttpResponseMessage response = await client.PostAsync(SaveUrl, new StringContent(update.ToString()));
             response.EnsureSuccessStatusCode();
         }
+
+        public static int ComputeIVPercent(int atk, int def, int sta)
+        {
+            return (int)System.Math.Round(((float)(atk + def + sta) * 100.0f) / 45.0f);
+        }
     }
 
     public class IvCombination
