@@ -14,6 +14,9 @@ using Android.Support.V7.Widget;
 using Android.Util;
 using PogoniumImporter.PokemonData;
 using Java.Lang;
+using Android.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PogoniumImporter.Droid
 {
@@ -26,13 +29,17 @@ namespace PogoniumImporter.Droid
         private LinearLayout shareLayout;
         private IWindowManager windowManager;
 
+        private ImportedPokemon importedPokemon = null;
+
+        private ProgressBar processingBar;
+        private Button importButton;
+        private EditText pokeName;
+
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
             string passcode = Helpers.Settings.PogoniumPasscode;
             string json = intent.GetStringExtra("json") ?? string.Empty;
-
-            ImportedPokemon importedPokemon = null;
 
             try
             {
@@ -73,23 +80,43 @@ namespace PogoniumImporter.Droid
 
                 this.windowManager.AddView(shareLayout, shareLayoutParams);
 
-                TextView pokeName = this.shareLayout.FindViewById<TextView>(Resource.Id.resultsPokemonName);
+                this.pokeName = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsPokemonName);
                 pokeName.Text = importedPokemon.Name;
 
-                TextView levelText = this.shareLayout.FindViewById<TextView>(Resource.Id.resultsPokemonLevel);
-                levelText.Text = string.Format("{0} {1:0.0}", Resources.GetString(Resource.String.level), importedPokemon.Level);
+                EditText levelText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsPokemonLevel);
+                levelText.Text = string.Format("{0:0.0}", importedPokemon.Level);
+                List<IInputFilter> levelFilters = new List<IInputFilter>(levelText.GetFilters());
+                levelFilters.Add(new MinMaxFilter(0.0f, 40.0f));
+                levelText.SetFilters(levelFilters.ToArray<IInputFilter>());
 
-                TextView atkText = this.shareLayout.FindViewById<TextView>(Resource.Id.resultsAttack);
+                EditText atkText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsAttack);
                 atkText.Text = importedPokemon.Attack.ToString();
+                List<IInputFilter> atkFilters = new List<IInputFilter>(atkText.GetFilters());
+                atkFilters.Add(new MinMaxFilter(0, 15));
+                atkText.SetFilters(atkFilters.ToArray<IInputFilter>());
 
-                TextView defText = this.shareLayout.FindViewById<TextView>(Resource.Id.resultsDefense);
+                EditText defText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsDefense);
                 defText.Text = importedPokemon.Defense.ToString();
+                List<IInputFilter> defFilters = new List<IInputFilter>(defText.GetFilters());
+                defFilters.Add(new MinMaxFilter(0, 15));
+                defText.SetFilters(defFilters.ToArray<IInputFilter>());
 
-                TextView staText = this.shareLayout.FindViewById<TextView>(Resource.Id.resultsStamina);
+                EditText staText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsStamina);
                 staText.Text = importedPokemon.Stamina.ToString();
+                List<IInputFilter> staFilters = new List<IInputFilter>(staText.GetFilters());
+                staFilters.Add(new MinMaxFilter(0, 15));
+                staText.SetFilters(staFilters.ToArray<IInputFilter>());
 
                 TextView ivText = this.shareLayout.FindViewById<TextView>(Resource.Id.resultsIv);
-                ivText.Text = importedPokemon.Percent.ToString() + '%';
+                ComputeIVPercent(atkText, defText, staText, ivText);
+
+                EventHandler<TextChangedEventArgs> ivHandler = (sender, e) =>
+                {
+                    ComputeIVPercent(atkText, defText, staText, ivText);
+                };
+                atkText.TextChanged += ivHandler;
+                defText.TextChanged += ivHandler;
+                staText.TextChanged += ivHandler;
 
                 Dictionary<string, PokemonMove> quickMoveDictionary = new Dictionary<string, PokemonMove>();
                 List<string> quickMovesList = new List<string>();
@@ -98,7 +125,7 @@ namespace PogoniumImporter.Droid
                     string moveName = Pokemon.GetMoveString(move);
                     quickMoveDictionary.Add(moveName, move);
                     quickMovesList.Add(moveName);
-                }                
+                }
                 Spinner quickMoves = this.shareLayout.FindViewById<Spinner>(Resource.Id.quickMoveSpinner);
                 ArrayAdapter<string> quickMoveAdapter = new ArrayAdapter<string>(quickMoves.Context, Resource.Layout.MoveSpinnerItem, quickMovesList);
                 quickMoves.Adapter = quickMoveAdapter;
@@ -123,8 +150,9 @@ namespace PogoniumImporter.Droid
                     StopService(intent);
                 };
 
-                ProgressBar processingBar = this.shareLayout.FindViewById<ProgressBar>(Resource.Id.processingBar);
-                Button importButton = this.shareLayout.FindViewById<Button>(Resource.Id.importButton);
+                this.processingBar = this.shareLayout.FindViewById<ProgressBar>(Resource.Id.processingBar);
+                this.importButton = this.shareLayout.FindViewById<Button>(Resource.Id.importButton);
+
                 importButton.Click += async (object sender, EventArgs ev) =>
                 {
                     processingBar.Visibility = ViewStates.Visible;
@@ -134,6 +162,13 @@ namespace PogoniumImporter.Droid
                         string selectedChargeMoveString = chargeMoves.SelectedItem.ToString();
                         importedPokemon.QuickMove = quickMoveDictionary[selectedQuickMoveString];
                         importedPokemon.ChargeMove = chargeMoveDictionary[selectedChargeMoveString];
+
+                        importedPokemon.Name = pokeName.Text;
+                        importedPokemon.Level = float.Parse(levelText.Text);
+                        importedPokemon.Attack = int.Parse(atkText.Text);
+                        importedPokemon.Defense = int.Parse(defText.Text);
+                        importedPokemon.Stamina = int.Parse(staText.Text);
+
                         bool updated = await importedPokemon.Import(Helpers.Settings.PogoniumPasscode);
                         Toast.MakeText(this, Resources.GetString(updated ? Resource.String.updatedPokemon : Resource.String.addedPokemon), ToastLength.Short).Show();
                         StopService(intent);
@@ -149,12 +184,40 @@ namespace PogoniumImporter.Droid
                         alertDialog.Window.SetType(WindowManagerTypes.SystemAlert);
                         alertDialog.Show();
                     }
-                    processingBar.Visibility = ViewStates.Invisible;
-
+                    processingBar.Visibility = ViewStates.Gone;
                 };
+
+                // hacky way to not block UI
+                importButton.TextChanged += async (object sender, Android.Text.TextChangedEventArgs e) =>
+                {
+                    await importedPokemon.RetrieveData(passcode);
+                    processingBar.Visibility = ViewStates.Gone;
+                    importButton.Enabled = true;
+                    pokeName.Text = importedPokemon.Name;
+                };
+                importButton.Text = importButton.Text;
             }
 
             return StartCommandResult.NotSticky;
+        }
+
+        private void ComputeIVPercent(TextView atkText, TextView defText, TextView staText, TextView ivText)
+        {
+            int atk, def, sta;
+
+            if (
+                int.TryParse(atkText.Text, out atk) &&
+                int.TryParse(defText.Text, out def) &&
+                int.TryParse(staText.Text, out sta))
+            {
+                int iv = (int)System.Math.Round(((float)(atk + def + sta) * 100.0f) / 45.0f);
+
+                ivText.Text = string.Format("{0}%", iv);
+            }
+            else
+            {
+                ivText.Text = string.Empty;
+            }
         }
 
         public override IBinder OnBind(Intent intent)
@@ -172,6 +235,86 @@ namespace PogoniumImporter.Droid
             if (shareLayout != null)
                 windowManager.RemoveView(shareLayout);
             base.OnDestroy();
+        }
+    }
+
+    public class MinMaxFilter : Java.Lang.Object, IInputFilter
+    {
+        private Type filterType;
+        private int minInt;
+        private int maxInt;
+        private float minFloat;
+        private float maxFloat;
+
+        public MinMaxFilter(int min, int max)
+        {
+            filterType = typeof(int);
+            minInt = min;
+            maxInt = max;
+        }
+
+        public MinMaxFilter(float min, float max)
+        {
+            filterType = typeof(float);
+            minFloat = min;
+            maxFloat = max;
+        }
+
+        public ICharSequence FilterFormatted(ICharSequence source, int start, int end, ISpanned dest, int dstart, int dend)
+        {
+            string val = dest.ToString().Insert(dstart, source.ToString());
+
+            if (filterType == typeof(int))
+            {
+                int input;
+
+                try
+                {
+                    input = int.Parse(val);
+                }
+                catch (System.Exception e)
+                {
+                    if (e is OverflowException || e is FormatException) {
+                        return new Java.Lang.String(string.Empty);
+                    }
+
+                    throw;
+                }
+
+                if (input < minInt || input > maxInt)
+                {
+                    return new Java.Lang.String(string.Empty);
+                }
+
+                return null;
+            }
+            else if (filterType == typeof(float))
+            {
+                float input;
+
+                try
+                {
+                    input = float.Parse(val);
+                }
+                catch (System.Exception e)
+                {
+                    if (e is OverflowException || e is FormatException)
+                    {
+                        return new Java.Lang.String(string.Empty);
+                    }
+
+                    throw;
+                }
+
+                if (input < minFloat || input > maxFloat)
+                {
+                    return new Java.Lang.String(string.Empty);
+                }
+
+                return null;
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

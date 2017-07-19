@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:padding="12sp"
         android:orientation="horizontal">
-        <TextView
+        <EditText
             android:id="@+id/resultsPokemonName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,46 +24,62 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
-            android:gravity="bottom" />
+            android:maxLength="12"
+            android:gravity="bottom"
+            style="@style/Widget.AppCompat.EditText" />
         <TextView
-            android:id="@+id/resultsPokemonLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textColor="#888"
             android:text="@string/level"
             android:layout_marginLeft="5sp" />
+        <EditText
+            android:id="@+id/resultsPokemonLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:inputType="numberDecimal"
+            android:layout_marginLeft="5sp"
+            android:text="38.5"
+            android:gravity="bottom|center_horizontal"
+            android:width="48dp"
+            style="@style/Widget.AppCompat.EditText" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center">
+        android:layout_gravity="center_horizontal|top">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center_horizontal|top">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/skin_iv_linearlayout"
                 android:paddingLeft="12sp"
                 android:paddingRight="12sp"
                 android:paddingTop="6sp"
                 android:paddingBottom="6sp"
                 android:layout_margin="6sp"
                 android:gravity="center"
-                android:layout_gravity="center">
-                <TextView
+                android:layout_gravity="center_horizontal|top">
+                <EditText
                     android:id="@+id/resultsAttack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:text="15"
-                    android:textColor="#222" />
+                    android:textColor="#222"
+                    android:gravity="center_horizontal|top"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:inputType="number"
+                    android:width="36dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -77,22 +93,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/skin_iv_linearlayout"
                 android:paddingLeft="12sp"
                 android:paddingRight="12sp"
                 android:paddingTop="6sp"
                 android:paddingBottom="6sp"
                 android:layout_margin="6sp"
                 android:gravity="center"
-                android:layout_gravity="center">
-                <TextView
+                android:layout_gravity="center_horizontal|top">
+                <EditText
                     android:id="@+id/resultsDefense"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="24sp"
                     android:textStyle="bold"
+                    android:text="15"
                     android:textColor="#222"
-                    android:text="15" />
+                    android:gravity="center_horizontal|top"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:inputType="number"
+                    android:width="36dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,22 +124,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/skin_iv_linearlayout"
                 android:paddingLeft="12sp"
                 android:paddingRight="12sp"
                 android:paddingTop="6sp"
                 android:paddingBottom="6sp"
                 android:layout_margin="6sp"
                 android:gravity="center"
-                android:layout_gravity="center">
-                <TextView
+                android:layout_gravity="center_horizontal|top">
+                <EditText
                     android:id="@+id/resultsStamina"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="24sp"
                     android:textStyle="bold"
+                    android:text="15"
                     android:textColor="#222"
-                    android:text="15" />
+                    android:gravity="center_horizontal|top"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:inputType="number"
+                    android:width="36dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -133,14 +155,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/skin_iv_linearlayout"
                 android:paddingLeft="12sp"
                 android:paddingRight="12sp"
                 android:paddingTop="6sp"
                 android:paddingBottom="6sp"
                 android:layout_margin="6sp"
                 android:gravity="center"
-                android:layout_gravity="center">
+                android:layout_gravity="center_horizontal|top">
                 <TextView
                     android:id="@+id/resultsIv"
                     android:layout_width="wrap_content"
@@ -148,14 +169,10 @@
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:textColor="#222"
-                    android:text="15" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/iv"
-                    android:textSize="12sp"
-                    android:layout_margin="0dp"
-                    android:textColor="#222" />
+                    android:text="100%"
+                    android:gravity="center_horizontal|top"
+                    android:paddingTop="10dp"
+                    android:width="80dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -203,13 +220,6 @@
                 style="@style/Widget.AppCompat.EditText" />
         </LinearLayout>
     </LinearLayout>
-    <ProgressBar
-        style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/processingBar"
-        android:visibility="invisible"
-        android:indeterminate="true" />
     <android.support.v7.widget.ButtonBarLayout
         android:minWidth="25px"
         android:minHeight="25px"
@@ -228,6 +238,14 @@
             android:text="@string/importButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:id="@+id/importButton" />
     </android.support.v7.widget.ButtonBarLayout>
+    <ProgressBar
+        style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/processingBar"
+        android:visibility="visible"
+        android:indeterminate="true" />
 </LinearLayout>
