@@ -29,6 +29,9 @@ namespace PogoniumImporter
         public PokemonMove? QuickMove { get; set; }
         public PokemonMove? ChargeMove { get; set; }
 
+        private JsonValue storedPokemon;
+        private JsonValue existingPokemon;
+
         public int? Percent
         {
             get
@@ -168,43 +171,32 @@ namespace PogoniumImporter
 
         public async Task<bool> Import(string passcode)
         {
-            JsonValue storedPokemon = await RetrieveData(passcode);
-            if(!storedPokemon.ContainsKey("myPokemon"))
-                storedPokemon["myPokemon"] = new JsonArray();
-
-            if (storedPokemon["myPokemon"].JsonType != JsonType.Array)
-                throw new HttpRequestException("Malformed JSON received");
+            await RetrieveData(passcode);
 
             bool updated = false;
-            foreach (JsonValue pokemon in storedPokemon["myPokemon"])
+            if(existingPokemon != null)
             {
-                if( pokemon.ContainsKey("key") &&
-                    pokemon["key"].JsonType == JsonType.String &&
-                    pokemon["key"] == this.Key &&
-                    pokemon["pokemon"] == this.IdString)
-                {
-                    updated = true;
-                    pokemon["level"] = this.Level;
-                    pokemon["attack"] = this.Attack;
-                    pokemon["defend"] = this.Defense;
-                    pokemon["stamina"] = this.Stamina;
+                this.existingPokemon["name"] = this.Name;
+                this.existingPokemon["level"] = this.Level;
+                this.existingPokemon["attack"] = this.Attack;
+                this.existingPokemon["defend"] = this.Defense;
+                this.existingPokemon["stamina"] = this.Stamina;
 
-                    if(QuickMove.HasValue)
-                        pokemon["quickMove"] = Pokemon.GetMoveCode(QuickMove.Value);
+                if (QuickMove.HasValue)
+                    this.existingPokemon["quickMove"] = Pokemon.GetMoveCode(QuickMove.Value);
 
-                    if(ChargeMove.HasValue)
-                        pokemon["chargeMove"] = Pokemon.GetMoveCode(ChargeMove.Value);
+                if (ChargeMove.HasValue)
+                    this.existingPokemon["chargeMove"] = Pokemon.GetMoveCode(ChargeMove.Value);
 
-                    break;
-                }
+                updated = true;
             }
-
-            if(!updated)
+            else
             {
                 JsonValue newPokemon = new JsonObject();
                 if(!string.IsNullOrEmpty(this.Key))
                 newPokemon["key"] = this.Key;
                 newPokemon["pokemon"] = this.IdString;
+                newPokemon["name"] = this.Name;
                 newPokemon["level"] = this.Level;
                 newPokemon["attack"] = this.Attack;
                 newPokemon["defend"] = this.Defense;
@@ -224,19 +216,46 @@ namespace PogoniumImporter
             return updated;
         }
 
-        public async Task<JsonValue> RetrieveData(string passcode)
+        public async Task RetrieveData(string passcode)
         {
+            if (this.storedPokemon != null) return;
+
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(string.Format(RetrieveUrl, passcode));
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 JsonValue empty = new JsonObject();
                 empty["myPokemon"] = new JsonArray();
-                return empty;
+                storedPokemon = empty;
             }
-            response.EnsureSuccessStatusCode();
-            string json = await response.Content.ReadAsStringAsync();
-            return JsonValue.Parse(json);
+            else
+            {
+                response.EnsureSuccessStatusCode();
+                string json = await response.Content.ReadAsStringAsync();
+                this.storedPokemon = JsonValue.Parse(json);
+
+                if (!this.storedPokemon.ContainsKey("myPokemon"))
+                    this.storedPokemon["myPokemon"] = new JsonArray();
+
+                if (this.storedPokemon["myPokemon"].JsonType != JsonType.Array)
+                    throw new HttpRequestException("Malformed JSON received");
+
+                foreach (JsonValue pokemon in this.storedPokemon["myPokemon"])
+                {
+                    if (pokemon.ContainsKey("key") &&
+                        pokemon["key"].JsonType == JsonType.String &&
+                        pokemon["key"] == this.Key &&
+                        pokemon["pokemon"] == this.IdString)
+                    {
+                        this.existingPokemon = pokemon;
+                        if (pokemon.ContainsKey("name") && pokemon["name"].JsonType == JsonType.String)
+                        {
+                            this.Name = pokemon["name"];
+                        }
+                        break;
+                    }
+                }
+            }
         }
 
         public async Task SaveData(string passcode, string myPokemon)

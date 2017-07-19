@@ -2809,26 +2809,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f02006a
-			public const int avd_hide_password_1 = 2130837610;
-			
-			// aapt resource value: 0x7f02006b
-			public const int avd_hide_password_2 = 2130837611;
-			
-			// aapt resource value: 0x7f02006c
-			public const int avd_hide_password_3 = 2130837612;
-			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
-			
-			// aapt resource value: 0x7f02006d
-			public const int avd_show_password_1 = 2130837613;
-			
-			// aapt resource value: 0x7f02006e
-			public const int avd_show_password_2 = 2130837614;
-			
-			// aapt resource value: 0x7f02006f
-			public const int avd_show_password_3 = 2130837615;
 			
 			// aapt resource value: 0x7f020055
 			public const int design_bottom_navigation_item_background = 2130837589;
@@ -2987,14 +2969,14 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070028
 			public const int bottom = 2131165224;
 			
-			// aapt resource value: 0x7f0700a3
-			public const int buttonBarLayout1 = 2131165347;
+			// aapt resource value: 0x7f0700a2
+			public const int buttonBarLayout1 = 2131165346;
 			
 			// aapt resource value: 0x7f07004b
 			public const int buttonPanel = 2131165259;
 			
-			// aapt resource value: 0x7f0700a4
-			public const int cancelButton = 2131165348;
+			// aapt resource value: 0x7f0700a3
+			public const int cancelButton = 2131165347;
 			
 			// aapt resource value: 0x7f070083
 			public const int cancel_action = 2131165315;
@@ -3113,8 +3095,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070046
 			public const int image = 2131165254;
 			
-			// aapt resource value: 0x7f0700a5
-			public const int importButton = 2131165349;
+			// aapt resource value: 0x7f0700a4
+			public const int importButton = 2131165348;
 			
 			// aapt resource value: 0x7f07008c
 			public const int info = 2131165324;
@@ -3188,8 +3170,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070038
 			public const int pin = 2131165240;
 			
-			// aapt resource value: 0x7f0700a2
-			public const int processingBar = 2131165346;
+			// aapt resource value: 0x7f0700a5
+			public const int processingBar = 2131165349;
 			
 			// aapt resource value: 0x7f070006
 			public const int progress_circular = 2131165190;
