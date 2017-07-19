@@ -192,7 +192,6 @@ namespace PogoniumImporter.Droid
                 {
                     try
                     {
-                        throw new System.Exception("testing exception");
                         await importedPokemon.RetrieveData(passcode);
                     }
                     catch (System.Exception e)
