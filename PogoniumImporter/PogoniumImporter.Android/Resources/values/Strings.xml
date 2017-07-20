@@ -13,7 +13,7 @@
   <string name="atk">ATK</string>
   <string name="def">DEF</string>
   <string name="sta">STA</string>
-  <string name="iv">IV</string>
+  <string name="ivPercent">IV%</string>
   <string name="updatedPokemon">Updated Pokemon</string>
   <string name="addedPokemon">Added Pokemon</string>
   <string name="importError">Import Error</string>
