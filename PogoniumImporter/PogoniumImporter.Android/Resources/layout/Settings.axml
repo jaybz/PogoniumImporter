@@ -4,12 +4,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:padding="16dp">
-    <android.support.design.widget.TextInputLayout
+    <android.support.design.widget.TextInputLayout xmlns:a="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        a:passwordToggleEnabled="true" xmlns:a="http://schemas.android.com/apk/res-auto">
+        a:passwordToggleEnabled="true">
         <EditText
-            android:inputType="textPassword"
+            android:inputType="textWebPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/passcode"
