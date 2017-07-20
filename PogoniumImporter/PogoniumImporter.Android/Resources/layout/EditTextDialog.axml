@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:theme="@style/Theme.AppCompat.Light.Dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <EditText
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="0dip"
+        style="@style/Widget.AppCompat.EditText"
+        android:id="@+id/editTextInput" />
+    <Button
+        android:text="@android:string/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0dip"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/ok" />
+</LinearLayout>

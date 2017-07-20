@@ -20,6 +20,8 @@
 
   <!-- Green Dialog Theme -->
   <style name="Theme.Custom.Dialog" parent="Theme.AppCompat.Light.Dialog">
+    <item name="android:windowNoTitle">true</item>
+
     <item name="colorPrimary">@color/material_green_400</item>
     <item name="colorPrimaryDark">@color/material_green_600</item>
     <item name="colorAccent">@color/material_green_A400</item>
