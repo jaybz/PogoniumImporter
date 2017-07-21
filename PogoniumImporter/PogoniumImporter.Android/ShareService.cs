@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
@@ -9,13 +8,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using Android.Support.V7.App;
-using Android.Support.V7.Widget;
-using Android.Util;
 using PogoniumImporter.PokemonData;
 using Java.Lang;
 using Android.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Android.Graphics.Drawables;
 using Android.Graphics;
@@ -268,8 +263,7 @@ namespace PogoniumImporter.Droid
                     processingBar.Visibility = ViewStates.Gone;
                 };
 
-                // hacky way to not block UI
-                importButton.TextChanged += async (object sender, Android.Text.TextChangedEventArgs ev) =>
+                Task.Run(async () =>
                 {
                     try
                     {
@@ -281,11 +275,14 @@ namespace PogoniumImporter.Droid
                             StopService(intent);
                         });
                     }
-                    processingBar.Visibility = ViewStates.Gone;
-                    importButton.Enabled = true;
-                    pokeName.Text = importedPokemon.Name;
-                };
-                importButton.Text = importButton.Text;
+
+                    this.shareLayout.Post(() =>
+                    {
+                        processingBar.Visibility = ViewStates.Gone;
+                        importButton.Enabled = true;
+                        pokeName.Text = importedPokemon.Name;
+                    });
+                });
             }
 
             return StartCommandResult.NotSticky;
