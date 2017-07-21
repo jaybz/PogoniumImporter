@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="0dip"
         style="@style/Widget.AppCompat.EditText"
+        android:selectAllOnFocus="true"
         android:id="@+id/editTextInput" />
     <Button
         android:text="@android:string/ok"

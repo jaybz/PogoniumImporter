@@ -312,7 +312,7 @@ namespace PogoniumImporter.Droid
             dialog.Window.Attributes.Gravity = GravityFlags.Bottom | GravityFlags.FillHorizontal;
             dialog.Window.Attributes.Width = WindowManagerLayoutParams.MatchParent;
             dialog.Window.Attributes.Height = WindowManagerLayoutParams.WrapContent;
-            dialog.Window.SetSoftInputMode(SoftInput.AdjustPan);
+            dialog.Window.SetSoftInputMode(SoftInput.AdjustPan | SoftInput.StateAlwaysVisible);
             dialog.Window.SetType(WindowManagerTypes.Phone);
             dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.White));
 
@@ -322,10 +322,23 @@ namespace PogoniumImporter.Droid
                 dialog.Dismiss();
             };
 
+            int currentY = 0;
             EditText input = dialog.FindViewById<EditText>(Resource.Id.editTextInput);
             input.Text = parent.Text;
             input.InputType = parent.InputType;
             input.SetFilters(parent.GetFilters());
+            input.ViewTreeObserver.GlobalLayout += (object sender, EventArgs e) =>
+            { // Hack to detect the user closing the soft keyboard
+                int[] loc = new int[2];
+                input.GetLocationOnScreen(loc);
+
+                if (currentY == 0)
+                    currentY = loc[1];
+                else if (currentY < loc[1])
+                    dialog.Dismiss();
+                else
+                    currentY = loc[1];
+            };
             input.TextChanged += (object sender, TextChangedEventArgs ev) =>
             {
                 parent.Text = input.Text;
