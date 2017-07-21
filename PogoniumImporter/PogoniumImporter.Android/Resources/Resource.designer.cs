@@ -2854,26 +2854,26 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020069
-			public const int avd_hide_password_1 = 2130837609;
-			
-			// aapt resource value: 0x7f02006a
-			public const int avd_hide_password_2 = 2130837610;
-			
 			// aapt resource value: 0x7f02006b
-			public const int avd_hide_password_3 = 2130837611;
+			public const int avd_hide_password_1 = 2130837611;
+			
+			// aapt resource value: 0x7f02006c
+			public const int avd_hide_password_2 = 2130837612;
+			
+			// aapt resource value: 0x7f02006d
+			public const int avd_hide_password_3 = 2130837613;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f02006c
-			public const int avd_show_password_1 = 2130837612;
-			
-			// aapt resource value: 0x7f02006d
-			public const int avd_show_password_2 = 2130837613;
-			
 			// aapt resource value: 0x7f02006e
-			public const int avd_show_password_3 = 2130837614;
+			public const int avd_show_password_1 = 2130837614;
+			
+			// aapt resource value: 0x7f02006f
+			public const int avd_show_password_2 = 2130837615;
+			
+			// aapt resource value: 0x7f020070
+			public const int avd_show_password_3 = 2130837616;
 			
 			// aapt resource value: 0x7f020055
 			public const int design_bottom_navigation_item_background = 2130837589;
@@ -2894,46 +2894,52 @@ namespace PogoniumImporter.Droid
 			public const int design_snackbar_background = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int Icon = 2130837595;
+			public const int ic_star_black_24dp = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int navigation_empty_icon = 2130837596;
+			public const int ic_star_border_black_24dp = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int notification_action_background = 2130837597;
+			public const int Icon = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int notification_bg = 2130837598;
+			public const int navigation_empty_icon = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int notification_bg_low = 2130837599;
+			public const int notification_action_background = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int notification_bg_low_normal = 2130837600;
+			public const int notification_bg = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int notification_bg_low_pressed = 2130837601;
+			public const int notification_bg_low = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int notification_bg_normal = 2130837602;
+			public const int notification_bg_low_normal = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int notification_bg_normal_pressed = 2130837603;
+			public const int notification_bg_low_pressed = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int notification_icon_background = 2130837604;
-			
-			// aapt resource value: 0x7f020067
-			public const int notification_template_icon_bg = 2130837607;
-			
-			// aapt resource value: 0x7f020068
-			public const int notification_template_icon_low_bg = 2130837608;
+			public const int notification_bg_normal = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int notification_tile_bg = 2130837605;
+			public const int notification_bg_normal_pressed = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int notify_panel_notification_icon_bg = 2130837606;
+			public const int notification_icon_background = 2130837606;
+			
+			// aapt resource value: 0x7f020069
+			public const int notification_template_icon_bg = 2130837609;
+			
+			// aapt resource value: 0x7f02006a
+			public const int notification_template_icon_low_bg = 2130837610;
+			
+			// aapt resource value: 0x7f020067
+			public const int notification_tile_bg = 2130837607;
+			
+			// aapt resource value: 0x7f020068
+			public const int notify_panel_notification_icon_bg = 2130837608;
 			
 			static Drawable()
 			{
@@ -3035,14 +3041,14 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070013
 			public const int bottom = 2131165203;
 			
-			// aapt resource value: 0x7f0700a9
-			public const int buttonBarLayout1 = 2131165353;
+			// aapt resource value: 0x7f0700aa
+			public const int buttonBarLayout1 = 2131165354;
 			
 			// aapt resource value: 0x7f07004f
 			public const int buttonPanel = 2131165263;
 			
-			// aapt resource value: 0x7f0700aa
-			public const int cancelButton = 2131165354;
+			// aapt resource value: 0x7f0700ab
+			public const int cancelButton = 2131165355;
 			
 			// aapt resource value: 0x7f070089
 			public const int cancel_action = 2131165321;
@@ -3056,8 +3062,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070016
 			public const int center_vertical = 2131165206;
 			
-			// aapt resource value: 0x7f0700a8
-			public const int chargeMoveSpinner = 2131165352;
+			// aapt resource value: 0x7f0700a9
+			public const int chargeMoveSpinner = 2131165353;
 			
 			// aapt resource value: 0x7f07005f
 			public const int checkbox = 2131165279;
@@ -3134,6 +3140,9 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f07005e
 			public const int expanded_menu = 2131165278;
 			
+			// aapt resource value: 0x7f0700a3
+			public const int favoriteButton = 2131165347;
+			
 			// aapt resource value: 0x7f07001a
 			public const int fill = 2131165210;
 			
@@ -3167,8 +3176,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f07004a
 			public const int image = 2131165258;
 			
-			// aapt resource value: 0x7f0700ab
-			public const int importButton = 2131165355;
+			// aapt resource value: 0x7f0700ac
+			public const int importButton = 2131165356;
 			
 			// aapt resource value: 0x7f070092
 			public const int info = 2131165330;
@@ -3194,8 +3203,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f07004c
 			public const int list_item = 2131165260;
 			
-			// aapt resource value: 0x7f0700ae
-			public const int masked = 2131165358;
+			// aapt resource value: 0x7f0700af
+			public const int masked = 2131165359;
 			
 			// aapt resource value: 0x7f07008b
 			public const int media_actions = 2131165323;
@@ -3245,8 +3254,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070040
 			public const int pin = 2131165248;
 			
-			// aapt resource value: 0x7f0700ac
-			public const int processingBar = 2131165356;
+			// aapt resource value: 0x7f0700ad
+			public const int processingBar = 2131165357;
 			
 			// aapt resource value: 0x7f070006
 			public const int progress_circular = 2131165190;
@@ -3254,20 +3263,20 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f070007
 			public const int progress_horizontal = 2131165191;
 			
-			// aapt resource value: 0x7f0700a7
-			public const int quickMoveSpinner = 2131165351;
+			// aapt resource value: 0x7f0700a8
+			public const int quickMoveSpinner = 2131165352;
 			
 			// aapt resource value: 0x7f070061
 			public const int radio = 2131165281;
 			
-			// aapt resource value: 0x7f0700a3
-			public const int resultsAttack = 2131165347;
-			
 			// aapt resource value: 0x7f0700a4
-			public const int resultsDefense = 2131165348;
+			public const int resultsAttack = 2131165348;
 			
-			// aapt resource value: 0x7f0700a6
-			public const int resultsIv = 2131165350;
+			// aapt resource value: 0x7f0700a5
+			public const int resultsDefense = 2131165349;
+			
+			// aapt resource value: 0x7f0700a7
+			public const int resultsIv = 2131165351;
 			
 			// aapt resource value: 0x7f0700a2
 			public const int resultsPokemonLevel = 2131165346;
@@ -3275,8 +3284,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f0700a1
 			public const int resultsPokemonName = 2131165345;
 			
-			// aapt resource value: 0x7f0700a5
-			public const int resultsStamina = 2131165349;
+			// aapt resource value: 0x7f0700a6
+			public const int resultsStamina = 2131165350;
 			
 			// aapt resource value: 0x7f07001e
 			public const int right = 2131165214;
@@ -3464,8 +3473,8 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f07000e
 			public const int view_offset_helper = 2131165198;
 			
-			// aapt resource value: 0x7f0700ad
-			public const int visible = 2131165357;
+			// aapt resource value: 0x7f0700ae
+			public const int visible = 2131165358;
 			
 			// aapt resource value: 0x7f070038
 			public const int withText = 2131165240;

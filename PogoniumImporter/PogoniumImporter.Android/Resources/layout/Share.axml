@@ -56,6 +56,22 @@
             android:focusableInTouchMode="false"
             android:clickable="true"
             style="@style/Widget.AppCompat.EditText" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="right|center_vertical">
+            <ImageButton
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:id="@+id/favoriteButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_star_border_black_24dp"
+                android:background="@drawable/ic_star_black_24dp"
+                android:backgroundTint="#ffffff00"
+                android:backgroundTintMode="src_atop" />
+        </LinearLayout>
     </LinearLayout>
     <android.support.v7.widget.GridLayout xmlns:a="http://schemas.android.com/apk/res-auto"
         android:minWidth="25px"
