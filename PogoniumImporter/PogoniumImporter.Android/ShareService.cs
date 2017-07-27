@@ -321,7 +321,8 @@ namespace PogoniumImporter.Droid
 
             int currentY = 0;
             EditText input = dialog.FindViewById<EditText>(Resource.Id.editTextInput);
-            input.Text = parent.Text;
+            string originalText = parent.Text;
+            input.Text = originalText;
             input.InputType = parent.InputType;
             input.SetFilters(parent.GetFilters());
             input.ViewTreeObserver.GlobalLayout += (object sender, EventArgs e) =>
@@ -332,7 +333,10 @@ namespace PogoniumImporter.Droid
                 if (currentY == 0)
                     currentY = loc[1];
                 else if (currentY < loc[1])
+                {
                     dialog.Dismiss();
+                    parent.Text = originalText;
+                }
                 else
                     currentY = loc[1];
             };
