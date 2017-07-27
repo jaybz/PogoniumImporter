@@ -212,7 +212,7 @@ namespace PogoniumImporter.Droid
                 Spinner quickMoves = this.shareLayout.FindViewById<Spinner>(Resource.Id.quickMoveSpinner);
                 ArrayAdapter<string> quickMoveAdapter = new ArrayAdapter<string>(quickMoves.Context, Resource.Layout.MoveSpinnerItem, quickMovesList);
                 quickMoves.Adapter = quickMoveAdapter;
-                quickMoves.SetSelection(quickMoveAdapter.GetPosition(quickMovesList[0]));
+                quickMoves.SetSelection(quickMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.QuickMove.Value)));
 
                 Dictionary<string, PokemonMove> chargeMoveDictionary = new Dictionary<string, PokemonMove>();
                 List<string> chargeMovesList = new List<string>();
@@ -225,7 +225,7 @@ namespace PogoniumImporter.Droid
                 Spinner chargeMoves = this.shareLayout.FindViewById<Spinner>(Resource.Id.chargeMoveSpinner);
                 ArrayAdapter<string> chargeMoveAdapter = new ArrayAdapter<string>(chargeMoves.Context, Resource.Layout.MoveSpinnerItem, chargeMovesList);
                 chargeMoves.Adapter = chargeMoveAdapter;
-                chargeMoves.SetSelection(chargeMoveAdapter.GetPosition(chargeMovesList[0]));
+                chargeMoves.SetSelection(chargeMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.ChargeMove.Value)));
 
                 Button cancelButton = this.shareLayout.FindViewById<Button>(Resource.Id.cancelButton);
                 cancelButton.Click += (object sender, EventArgs e) =>
@@ -282,6 +282,8 @@ namespace PogoniumImporter.Droid
                         processingBar.Visibility = ViewStates.Gone;
                         importButton.Enabled = true;
                         pokeName.Text = importedPokemon.Name;
+                        quickMoves.SetSelection(quickMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.QuickMove.Value)));
+                        chargeMoves.SetSelection(chargeMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.ChargeMove.Value)));
                     });
                 });
             }

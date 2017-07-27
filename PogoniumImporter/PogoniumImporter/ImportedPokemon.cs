@@ -95,6 +95,9 @@ namespace PogoniumImporter
 
                     PokemonId me = (PokemonId)Id;
                     this.Name = me.ToString();
+
+                    this.QuickMove = Pokemon.GetQuickMoves(me)[0];
+                    this.ChargeMove = Pokemon.GetChargeMoves(me)[0];
                 }
                 else
                 {
@@ -293,6 +296,12 @@ namespace PogoniumImporter
                         if (pokemon.ContainsKey("name") && pokemon["name"].JsonType == JsonType.String)
                         {
                             this.Name = pokemon["name"];
+                            this.QuickMove = Pokemon.GetQuickMoves(PokemonId.Value).Where<PokemonMove>(
+                                    item => Pokemon.GetMoveCode(item) == pokemon["quickMove"]
+                                ).First<PokemonMove>();
+                            this.ChargeMove = Pokemon.GetChargeMoves(PokemonId.Value).Where<PokemonMove>(
+                                    item => Pokemon.GetMoveCode(item) == pokemon["chargeMove"]
+                                ).First<PokemonMove>();
                         }
                         break;
                     }
