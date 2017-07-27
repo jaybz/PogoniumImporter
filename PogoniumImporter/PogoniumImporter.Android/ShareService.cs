@@ -14,6 +14,7 @@ using Android.Text;
 using System.Threading.Tasks;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using static Android.Widget.TextView;
 
 namespace PogoniumImporter.Droid
 {
@@ -343,6 +344,14 @@ namespace PogoniumImporter.Droid
             input.TextChanged += (object sender, TextChangedEventArgs ev) =>
             {
                 parent.Text = input.Text;
+            };
+            input.EditorAction += (object sender, EditorActionEventArgs ev) =>
+            {
+                if(ev.ActionId == Android.Views.InputMethods.ImeAction.ImeNull || ev.ActionId == Android.Views.InputMethods.ImeAction.Done)
+                {
+                    ev.Handled = true;
+                    dialog.Dismiss();
+                }
             };
 
             dialog.Show();
