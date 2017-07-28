@@ -3908,6 +3908,9 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f080028
 			public const int path_password_strike_through = 2131230760;
 			
+			// aapt resource value: 0x7f080042
+			public const int pleaseWait = 2131230786;
+			
 			// aapt resource value: 0x7f08003c
 			public const int quickMove = 2131230780;
 			

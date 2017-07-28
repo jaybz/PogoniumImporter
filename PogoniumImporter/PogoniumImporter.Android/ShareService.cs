@@ -29,33 +29,48 @@ namespace PogoniumImporter.Droid
 
         private ImportedPokemon importedPokemon = null;
 
+        private TextView ivText;
+        private EditText pokeName, levelText, atkText, defText, staText;
+        private Spinner quickMoves, chargeMoves;
+        private Button importButton, cancelButton;
+        private ProgressBar processingBar;
+        private ArrayAdapter<string> quickMoveAdapter, chargeMoveAdapter;
+        private Dictionary<string, PokemonMove> quickMoveDictionary = new Dictionary<string, PokemonMove>();
+        private Dictionary<string, PokemonMove> chargeMoveDictionary = new Dictionary<string, PokemonMove>();
+
+        private Intent intent;
+
+        private Handler mainThread = new Handler();
+
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
+            this.intent = intent;
+
             string passcode = Helpers.Settings.PogoniumPasscode;
-
-            if(string.IsNullOrEmpty(passcode))
+            if (string.IsNullOrEmpty(passcode))
             {
-                ShowAlert(Resources.GetString(Resource.String.importError), Resources.GetString(Resource.String.noPasscodeError), (senderAlert, args) => {
-                    StopService(intent);
+                ShowAlert(Resource.String.importError, Resource.String.noPasscodeError, (senderAlert, args) =>
+                {
+                    StopSelf();
                 });
-                return StartCommandResult.NotSticky;
             }
-
-            string json = intent.GetStringExtra("json") ?? string.Empty;
-
-            try
+            else
             {
-                importedPokemon = ImportedPokemon.Parse(json);
-            }
-            catch (ArgumentException)
-            {
-                Toast.MakeText(this, Resource.String.invalidJson, ToastLength.Short).Show();
-                StopService(intent);
-            }
+                string json = intent.GetStringExtra("json") ?? string.Empty;
+                try
+                {
+                    importedPokemon = ImportedPokemon.Parse(json);
+                }
+                catch (ArgumentException)
+                {
+                    Toast.MakeText(this, Resource.String.invalidJson, ToastLength.Short).Show();
+                    StopSelf();
+                    return StartCommandResult.NotSticky;
+                }
 
-            if (importedPokemon != null)
-            {
+                InitializeOverlay();
+
                 Notification notification = new Notification.Builder(this)
                     .SetContentTitle(Resources.GetString(Resource.String.appName))
                     .SetContentText(Resources.GetString(Resource.String.notificationText))
@@ -66,202 +81,10 @@ namespace PogoniumImporter.Droid
 
                 StartForeground(ServiceNotificationId, notification);
 
-                this.windowManager = GetSystemService(WindowService).JavaCast<IWindowManager>();
-
-                WindowManagerLayoutParams shareLayoutParams = new WindowManagerLayoutParams(
-                    WindowManagerLayoutParams.MatchParent,
-                    WindowManagerLayoutParams.WrapContent,
-                    WindowManagerTypes.Phone,
-                    WindowManagerFlags.NotTouchModal,
-                    Format.Transparent
-                    );
-
-                LayoutInflater inflater = GetSystemService(LayoutInflaterService).JavaCast<LayoutInflater>();
-                this.shareLayout = inflater.Inflate(Resource.Layout.Share, null).JavaCast<LinearLayout>();
-                shareLayoutParams.SoftInputMode = SoftInput.AdjustPan;
-                shareLayoutParams.Gravity = GravityFlags.Center | GravityFlags.Top;
-
-                this.windowManager.AddView(shareLayout, shareLayoutParams);
-
-                EditText pokeName = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsPokemonName);
-                pokeName.Text = importedPokemon.Name;
-                pokeName.Click += (object sender, EventArgs ev) =>
-                {
-                    EditTextHandler(pokeName);
-                };
-
-                EditText levelText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsPokemonLevel);
-                levelText.Text = string.Format("{0:0.0}", importedPokemon.Level);
-                List<IInputFilter> levelFilters = new List<IInputFilter>(levelText.GetFilters());
-                levelFilters.Add(new PokemonLevelFilter(1.0f, 39.0f));
-                levelText.SetFilters(levelFilters.ToArray<IInputFilter>());
-                levelText.TextChanged += (object sender, Android.Text.TextChangedEventArgs ev) =>
-                {
-                    float i = 0;
-                    float.TryParse(levelText.Text, out i);
-                    if (i < 1.0f)
-                        levelText.Text = "1.0";
-                    else if (i > 39.0f)
-                        levelText.Text = "39.0";
-                    else
-                    {
-                        string newText = string.Format("{0:0.0}", i);
-                        if (levelText.Text != newText)
-                            levelText.Text = newText;
-                    }
-                };
-                levelText.Click += (object sender, EventArgs ev) =>
-                {
-                    EditTextHandler(levelText);
-                };
-
-                EditText atkText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsAttack);
-                atkText.Text = importedPokemon.Attack.ToString();
-                List<IInputFilter> atkFilters = new List<IInputFilter>(atkText.GetFilters());
-                atkFilters.Add(new MinMaxFilter(0, 15));
-                atkText.SetFilters(atkFilters.ToArray<IInputFilter>());
-                atkText.TextChanged += (object sender, Android.Text.TextChangedEventArgs ev) =>
-                {
-                    int i = 0;
-                    int.TryParse(atkText.Text, out i);
-                    if (i < 0)
-                        atkText.Text = "0";
-                    else if (i > 15)
-                        atkText.Text = "15";
-                    else
-                    {
-                        string newText = i.ToString();
-                        if (atkText.Text != newText)
-                            atkText.Text = newText;
-                    }
-                };
-                atkText.Click += (object sender, EventArgs ev) =>
-                {
-                    EditTextHandler(atkText);
-                };
-
-                EditText defText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsDefense);
-                defText.Text = importedPokemon.Defense.ToString();
-                List<IInputFilter> defFilters = new List<IInputFilter>(defText.GetFilters());
-                defFilters.Add(new MinMaxFilter(0, 15));
-                defText.SetFilters(defFilters.ToArray<IInputFilter>());
-                defText.TextChanged += (object sender, Android.Text.TextChangedEventArgs ev) =>
-                {
-                    int i = 0;
-                    int.TryParse(defText.Text, out i);
-                    if (i < 0)
-                        defText.Text = "0";
-                    else if (i > 15)
-                        defText.Text = "15";
-                    else
-                    {
-                        string newText = i.ToString();
-                        if (defText.Text != newText)
-                            defText.Text = newText;
-                    }
-                };
-                defText.Click += (object sender, EventArgs ev) =>
-                {
-                    EditTextHandler(defText);
-                };
-
-                EditText staText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsStamina);
-                staText.Text = importedPokemon.Stamina.ToString();
-                List<IInputFilter> staFilters = new List<IInputFilter>(staText.GetFilters());
-                staFilters.Add(new MinMaxFilter(0, 15));
-                staText.SetFilters(staFilters.ToArray<IInputFilter>());
-                staText.TextChanged += (object sender, Android.Text.TextChangedEventArgs ev) =>
-                {
-                    int i = 0;
-                    int.TryParse(staText.Text, out i);
-                    if (i < 0)
-                        staText.Text = "0";
-                    else if (i > 15)
-                        staText.Text = "15";
-                    else
-                    {
-                        string newText = i.ToString();
-                        if (staText.Text != newText)
-                            staText.Text = newText;
-                    }
-                };
-                staText.Click += (object sender, EventArgs ev) =>
-                {
-                    EditTextHandler(staText);
-                };
-
-                TextView ivText = this.shareLayout.FindViewById<TextView>(Resource.Id.resultsIv);
-                ComputeIVPercent(atkText, defText, staText, ivText);
-
-                EventHandler<TextChangedEventArgs> ivHandler = (sender, e) =>
-                {
-                    ComputeIVPercent(atkText, defText, staText, ivText);
-                };
-                atkText.TextChanged += ivHandler;
-                defText.TextChanged += ivHandler;
-                staText.TextChanged += ivHandler;
-
-                Dictionary<string, PokemonMove> quickMoveDictionary = new Dictionary<string, PokemonMove>();
-                List<string> quickMovesList = new List<string>();
-                foreach (PokemonMove move in Pokemon.GetQuickMoves(importedPokemon.PokemonId.Value))
-                {
-                    string moveName = Pokemon.GetMoveString(move);
-                    quickMoveDictionary.Add(moveName, move);
-                    quickMovesList.Add(moveName);
-                }
-                Spinner quickMoves = this.shareLayout.FindViewById<Spinner>(Resource.Id.quickMoveSpinner);
-                ArrayAdapter<string> quickMoveAdapter = new ArrayAdapter<string>(quickMoves.Context, Resource.Layout.MoveSpinnerItem, quickMovesList);
-                quickMoves.Adapter = quickMoveAdapter;
-                quickMoves.SetSelection(quickMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.QuickMove.Value)));
-
-                Dictionary<string, PokemonMove> chargeMoveDictionary = new Dictionary<string, PokemonMove>();
-                List<string> chargeMovesList = new List<string>();
-                foreach (PokemonMove move in Pokemon.GetChargeMoves(importedPokemon.PokemonId.Value))
-                {
-                    string moveName = Pokemon.GetMoveString(move);
-                    chargeMoveDictionary.Add(moveName, move);
-                    chargeMovesList.Add(moveName);
-                }
-                Spinner chargeMoves = this.shareLayout.FindViewById<Spinner>(Resource.Id.chargeMoveSpinner);
-                ArrayAdapter<string> chargeMoveAdapter = new ArrayAdapter<string>(chargeMoves.Context, Resource.Layout.MoveSpinnerItem, chargeMovesList);
-                chargeMoves.Adapter = chargeMoveAdapter;
-                chargeMoves.SetSelection(chargeMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.ChargeMove.Value)));
-
-                Button cancelButton = this.shareLayout.FindViewById<Button>(Resource.Id.cancelButton);
+                // Set this here to allow exiting the dialog when RetrieveData is stuck
                 cancelButton.Click += (object sender, EventArgs e) =>
                 {
-                    StopService(intent);
-                };
-
-                ProgressBar processingBar = this.shareLayout.FindViewById<ProgressBar>(Resource.Id.processingBar);
-                Button importButton = this.shareLayout.FindViewById<Button>(Resource.Id.importButton);
-
-                importButton.Click += async (object sender, EventArgs ev) =>
-                {
-                    processingBar.Visibility = ViewStates.Visible;
-                    try
-                    {
-                        string selectedQuickMoveString = quickMoves.SelectedItem.ToString();
-                        string selectedChargeMoveString = chargeMoves.SelectedItem.ToString();
-                        importedPokemon.QuickMove = quickMoveDictionary[selectedQuickMoveString];
-                        importedPokemon.ChargeMove = chargeMoveDictionary[selectedChargeMoveString];
-
-                        importedPokemon.Name = pokeName.Text;
-                        importedPokemon.Level = float.Parse(levelText.Text);
-                        importedPokemon.Attack = int.Parse(atkText.Text);
-                        importedPokemon.Defense = int.Parse(defText.Text);
-                        importedPokemon.Stamina = int.Parse(staText.Text);
-
-                        bool updated = await importedPokemon.Import(Helpers.Settings.PogoniumPasscode);
-                        Toast.MakeText(this, Resources.GetString(updated ? Resource.String.updatedPokemon : Resource.String.addedPokemon), ToastLength.Short).Show();
-                        StopService(intent);
-                    }
-                    catch (System.Exception e)
-                    {
-                        ShowAlert(Resources.GetString(Resource.String.importError), e.Message, (senderAlert, args) => { });
-
-                    }
-                    processingBar.Visibility = ViewStates.Gone;
+                    StopSelf();
                 };
 
                 Task.Run(async () =>
@@ -272,18 +95,23 @@ namespace PogoniumImporter.Droid
                     }
                     catch (System.Exception e)
                     {
-                        ShowAlert(Resources.GetString(Resource.String.importError), e.Message, (senderAlert, args) => {
-                            StopService(intent);
+                        mainThread.Post(() =>
+                        {
+                            HideLayout();
+                            ShowAlert(Resource.String.importError, e.Message, (senderAlert, args) =>
+                            {
+                                StopSelf();
+                            });
                         });
                     }
 
-                    this.shareLayout.Post(() =>
+                    mainThread.Post(() =>
                     {
-                        processingBar.Visibility = ViewStates.Gone;
+                        FillData();
+                        SetInputFilters();
+                        SetEventHandlers();
                         importButton.Enabled = true;
-                        pokeName.Text = importedPokemon.Name;
-                        quickMoves.SetSelection(quickMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.QuickMove.Value)));
-                        chargeMoves.SetSelection(chargeMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.ChargeMove.Value)));
+                        processingBar.Visibility = ViewStates.Gone;
                     });
                 });
             }
@@ -291,10 +119,143 @@ namespace PogoniumImporter.Droid
             return StartCommandResult.NotSticky;
         }
 
-        private void ShowAlert(string title, string message, EventHandler<DialogClickEventArgs> onClick)
+        private void InitializeOverlay()
         {
-            Android.App.AlertDialog.Builder alert = new Android.App.AlertDialog.Builder(new ContextThemeWrapper(this, Resource.Style.Theme_AppCompat_Light_Dialog));
-            alert.SetTitle(title);
+            this.windowManager = GetSystemService(WindowService).JavaCast<IWindowManager>();
+
+            WindowManagerLayoutParams shareLayoutParams = new WindowManagerLayoutParams(
+                WindowManagerLayoutParams.MatchParent,
+                WindowManagerLayoutParams.WrapContent,
+                WindowManagerTypes.Phone,
+                WindowManagerFlags.NotTouchModal,
+                Format.Transparent
+                );
+
+            LayoutInflater inflater = GetSystemService(LayoutInflaterService).JavaCast<LayoutInflater>();
+            this.shareLayout = inflater.Inflate(Resource.Layout.Share, null).JavaCast<LinearLayout>();
+            shareLayoutParams.SoftInputMode = SoftInput.AdjustPan;
+            shareLayoutParams.Gravity = GravityFlags.Center | GravityFlags.Top;
+
+            this.windowManager.AddView(shareLayout, shareLayoutParams);
+
+            pokeName = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsPokemonName);
+            levelText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsPokemonLevel);
+            atkText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsAttack);
+            defText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsDefense);
+            staText = this.shareLayout.FindViewById<EditText>(Resource.Id.resultsStamina);
+            ivText = this.shareLayout.FindViewById<TextView>(Resource.Id.resultsIv);
+
+            quickMoves = this.shareLayout.FindViewById<Spinner>(Resource.Id.quickMoveSpinner);
+            chargeMoves = this.shareLayout.FindViewById<Spinner>(Resource.Id.chargeMoveSpinner);
+            quickMoveAdapter = new ArrayAdapter<string>(quickMoves.Context, Resource.Layout.MoveSpinnerItem);
+            chargeMoveAdapter = new ArrayAdapter<string>(chargeMoves.Context, Resource.Layout.MoveSpinnerItem);
+            quickMoves.Adapter = quickMoveAdapter;
+            chargeMoves.Adapter = chargeMoveAdapter;
+
+            cancelButton = this.shareLayout.FindViewById<Button>(Resource.Id.cancelButton);
+            processingBar = this.shareLayout.FindViewById<ProgressBar>(Resource.Id.processingBar);
+            importButton = this.shareLayout.FindViewById<Button>(Resource.Id.importButton);
+        }
+
+        private void FillData()
+        {
+            pokeName.Text = importedPokemon.Name;
+            levelText.Text = string.Format("{0:0.0}", importedPokemon.Level);
+            atkText.Text = importedPokemon.Attack.ToString();
+            defText.Text = importedPokemon.Defense.ToString();
+            staText.Text = importedPokemon.Stamina.ToString();
+            ivText.Text = ComputeIVPercent(atkText.Text, defText.Text, staText.Text);
+
+            List<string> quickMovesList = new List<string>();
+            quickMoveDictionary.Clear();
+            foreach (PokemonMove move in Pokemon.GetQuickMoves(importedPokemon.PokemonId.Value))
+            {
+                string moveName = Pokemon.GetMoveString(move);
+                quickMoveDictionary.Add(moveName, move);
+                quickMovesList.Add(moveName);
+            }
+            quickMoveAdapter.Clear();
+            quickMoveAdapter.AddAll(quickMovesList);
+
+            List<string> chargeMovesList = new List<string>();
+            chargeMoveDictionary.Clear();
+            foreach (PokemonMove move in Pokemon.GetChargeMoves(importedPokemon.PokemonId.Value))
+            {
+                string moveName = Pokemon.GetMoveString(move);
+                chargeMoveDictionary.Add(moveName, move);
+                chargeMovesList.Add(moveName);
+            }
+            chargeMoveAdapter.Clear();
+            chargeMoveAdapter.AddAll(chargeMovesList);
+
+            chargeMoves.SetSelection(chargeMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.ChargeMove.Value)));
+            quickMoves.SetSelection(quickMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.QuickMove.Value)));
+        }
+
+        private void SetEventHandlers()
+        {
+            pokeName.Click += EditTextHandler;
+            levelText.Click += EditTextHandler;
+            atkText.Click += EditTextHandler;
+            defText.Click += EditTextHandler;
+            staText.Click += EditTextHandler;
+            levelText.TextChanged += LevelTextChangedHandler;
+            atkText.TextChanged += IvTextChangedHandler;
+            defText.TextChanged += IvTextChangedHandler;
+            staText.TextChanged += IvTextChangedHandler;
+
+            importButton.Click += async (object sender, EventArgs ev) =>
+            {
+                processingBar.Visibility = ViewStates.Visible;
+                try
+                {
+                    string selectedQuickMoveString = quickMoves.SelectedItem.ToString();
+                    string selectedChargeMoveString = chargeMoves.SelectedItem.ToString();
+                    importedPokemon.QuickMove = quickMoveDictionary[selectedQuickMoveString];
+                    importedPokemon.ChargeMove = chargeMoveDictionary[selectedChargeMoveString];
+
+                    importedPokemon.Name = pokeName.Text;
+                    importedPokemon.Level = float.Parse(levelText.Text);
+                    importedPokemon.Attack = int.Parse(atkText.Text);
+                    importedPokemon.Defense = int.Parse(defText.Text);
+                    importedPokemon.Stamina = int.Parse(staText.Text);
+
+                    bool updated = await importedPokemon.Import(Helpers.Settings.PogoniumPasscode);
+                    Toast.MakeText(this, Resources.GetString(updated ? Resource.String.updatedPokemon : Resource.String.addedPokemon), ToastLength.Short).Show();
+                    StopSelf();
+                }
+                catch (System.Exception e)
+                {
+                    ShowAlert(Resource.String.importError, e.Message, (senderAlert, args) => { });
+                }
+                processingBar.Visibility = ViewStates.Gone;
+            };
+        }
+
+        private void SetInputFilters()
+        {
+            AddInputFilter(levelText, new PokemonLevelFilter(1.0f, 39.0f));
+            AddInputFilter(atkText, new MinMaxFilter(0, 15));
+            AddInputFilter(defText, new MinMaxFilter(0, 15));
+            AddInputFilter(staText, new MinMaxFilter(0, 15));
+        }
+
+        private void AddInputFilter(EditText editText, IInputFilter filter)
+        {
+            List<IInputFilter> currentFilters = editText.GetFilters().ToList();
+            currentFilters.Add(filter);
+            editText.SetFilters(currentFilters.ToArray<IInputFilter>());
+        }
+
+        private void ShowAlert(int titleId, int messageId, EventHandler<DialogClickEventArgs> onClick)
+        {
+            ShowAlert(titleId, Resources.GetString(messageId), onClick);
+        }
+
+        private void ShowAlert(int titleId, string message, EventHandler<DialogClickEventArgs> onClick)
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(new ContextThemeWrapper(this, Resource.Style.Theme_AppCompat_Light_Dialog));
+            alert.SetTitle(titleId);
             alert.SetMessage(message);
             alert.SetPositiveButton(Resources.GetString(Resource.String.Dismiss), onClick);
             Dialog alertDialog = alert.Create();
@@ -302,8 +263,57 @@ namespace PogoniumImporter.Droid
             alertDialog.Show();
         }
 
-        private void EditTextHandler(EditText parent)
+        private void LevelTextChangedHandler(object sender, TextChangedEventArgs e)
         {
+            if (!(sender is EditText))
+                return;
+
+            EditText parent = (EditText)sender;
+
+            float i = 0;
+            float.TryParse(parent.Text, out i);
+            if (i < 1.0f)
+                parent.Text = "1.0";
+            else if (i > 39.0f)
+                parent.Text = "39.0";
+            else
+            {
+                string newText = string.Format("{0:0.0}", i);
+                if (parent.Text != newText)
+                    parent.Text = newText;
+            }
+        }
+
+        private void IvTextChangedHandler(object sender, TextChangedEventArgs e)
+        {
+            if (!(sender is EditText))
+                return;
+
+            EditText parent = (EditText)sender;
+
+            int i = 0;
+            int.TryParse(parent.Text, out i);
+            if (i < 0)
+                parent.Text = "0";
+            else if (i > 15)
+                parent.Text = "15";
+            else
+            {
+                string newText = i.ToString();
+                if (parent.Text != newText)
+                    parent.Text = newText;
+            }
+
+            ivText.Text = ComputeIVPercent(atkText.Text, defText.Text, staText.Text);
+        }
+
+        private void EditTextHandler(object sender, EventArgs eventArgs)
+        {
+            if (!(sender is EditText))
+                return;
+
+            EditText parent = (EditText)sender;
+
             Dialog dialog = new Dialog(this);
             dialog.Window.RequestFeature(WindowFeatures.NoTitle);
             dialog.SetContentView(Resource.Layout.EditTextDialog);
@@ -317,7 +327,7 @@ namespace PogoniumImporter.Droid
             dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.White));
 
             Button dialogButton = dialog.FindViewById<Button>(Resource.Id.ok);
-            dialogButton.Click += (object sender, EventArgs ev) =>
+            dialogButton.Click += (object s, EventArgs e) =>
             {
                 dialog.Dismiss();
             };
@@ -328,7 +338,7 @@ namespace PogoniumImporter.Droid
             input.Text = originalText;
             input.InputType = parent.InputType;
             input.SetFilters(parent.GetFilters());
-            input.ViewTreeObserver.GlobalLayout += (object sender, EventArgs e) =>
+            input.ViewTreeObserver.GlobalLayout += (object s, EventArgs e) =>
             { // Hack to detect the user closing the soft keyboard
                 int[] loc = new int[2];
                 input.GetLocationOnScreen(loc);
@@ -343,15 +353,15 @@ namespace PogoniumImporter.Droid
                 else
                     currentY = loc[1];
             };
-            input.TextChanged += (object sender, TextChangedEventArgs ev) =>
+            input.TextChanged += (object s, TextChangedEventArgs e) =>
             {
                 parent.Text = input.Text;
             };
-            input.EditorAction += (object sender, EditorActionEventArgs ev) =>
+            input.EditorAction += (object s, EditorActionEventArgs e) =>
             {
-                if(ev.ActionId == Android.Views.InputMethods.ImeAction.ImeNull || ev.ActionId == Android.Views.InputMethods.ImeAction.Done)
+                if(e.ActionId == Android.Views.InputMethods.ImeAction.ImeNull || e.ActionId == Android.Views.InputMethods.ImeAction.Done)
                 {
-                    ev.Handled = true;
+                    e.Handled = true;
                     dialog.Dismiss();
                 }
             };
@@ -359,21 +369,17 @@ namespace PogoniumImporter.Droid
             dialog.Show();
         }
 
-        private void ComputeIVPercent(TextView atkText, TextView defText, TextView staText, TextView ivText)
+        private string ComputeIVPercent(string atkText, string defText, string staText)
         {
             int atk, def, sta;
 
             if (
-                int.TryParse(atkText.Text, out atk) &&
-                int.TryParse(defText.Text, out def) &&
-                int.TryParse(staText.Text, out sta))
-            {
-                ivText.Text = string.Format("{0}%", ImportedPokemon.ComputeIVPercent(atk, def, sta));
-            }
+                int.TryParse(atkText, out atk) &&
+                int.TryParse(defText, out def) &&
+                int.TryParse(staText, out sta))
+                return string.Format("{0}%", ImportedPokemon.ComputeIVPercent(atk, def, sta));
             else
-            {
-                ivText.Text = string.Empty;
-            }
+                return string.Empty;
         }
 
         public override IBinder OnBind(Intent intent)
@@ -391,6 +397,12 @@ namespace PogoniumImporter.Droid
             if (shareLayout != null)
                 windowManager.RemoveView(shareLayout);
             base.OnDestroy();
+        }
+
+        private void HideLayout()
+        {
+            if (shareLayout != null)
+                shareLayout.Visibility = ViewStates.Gone;
         }
     }
 

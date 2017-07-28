@@ -18,5 +18,8 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="0dip"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:id="@+id/ok" />
+        android:id="@+id/ok"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="true" />
 </LinearLayout>
