@@ -94,7 +94,7 @@ namespace PogoniumImporter
 
                     Task.Run(async () =>
                     {
-                        Pokemon pokemon = await GameMaster.GetPokemon(me);
+                        Pokemon pokemon = await GameMaster.GetPokemon(me).ConfigureAwait(false);
                         this.Name = pokemon.FriendlyName;
                         Move[] qMoves = pokemon.QuickMoves;
                         Move[] cMoves = pokemon.ChargeMoves;
@@ -219,7 +219,7 @@ namespace PogoniumImporter
 
         public async Task<bool> Import(string passcode)
         {
-            await RetrieveData(passcode);
+            await RetrieveData(passcode).ConfigureAwait(false);
 
             bool updated = false;
             if(existingPokemon != null)
@@ -259,7 +259,7 @@ namespace PogoniumImporter
                 ((JsonArray)storedPokemon["myPokemon"]).Add(newPokemon);
             }
 
-            await SaveData(passcode, storedPokemon.ToString());
+            await SaveData(passcode, storedPokemon.ToString()).ConfigureAwait(false);
 
             return updated;
         }
@@ -269,7 +269,7 @@ namespace PogoniumImporter
             if (this.storedPokemon != null) return;
 
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(string.Format(RetrieveUrl, passcode));
+            HttpResponseMessage response = await client.GetAsync(string.Format(RetrieveUrl, passcode)).ConfigureAwait(false);
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 JsonValue empty = new JsonObject();
@@ -279,7 +279,7 @@ namespace PogoniumImporter
             else
             {
                 response.EnsureSuccessStatusCode();
-                string json = await response.Content.ReadAsStringAsync();
+                string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 this.storedPokemon = JsonValue.Parse(json);
 
                 if (!this.storedPokemon.ContainsKey("myPokemon"))
@@ -300,10 +300,10 @@ namespace PogoniumImporter
                         {
                             this.Name = pokemon["name"];
                             Task.Run(async () => {
-                                this.QuickMove = (await GameMaster.GetQuickMoves(PokemonId.Value)).First<Move>(
+                                this.QuickMove = (await GameMaster.GetQuickMoves(PokemonId.Value).ConfigureAwait(false)).First<Move>(
                                         item => item.CommonName == pokemon["quickMove"]
                                     );
-                                this.ChargeMove = (await GameMaster.GetChargeMoves(PokemonId.Value)).First<Move>(
+                                this.ChargeMove = (await GameMaster.GetChargeMoves(PokemonId.Value).ConfigureAwait(false)).First<Move>(
                                         item => item.CommonName == pokemon["chargeMove"]
                                     );
                             }).Wait();
@@ -321,7 +321,7 @@ namespace PogoniumImporter
             update["pokemon"] = myPokemon;
 
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.PostAsync(SaveUrl, new StringContent(update.ToString()));
+            HttpResponseMessage response = await client.PostAsync(SaveUrl, new StringContent(update.ToString())).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
         }
 
@@ -336,7 +336,7 @@ namespace PogoniumImporter
             };
             Task.Run(async () =>
             {
-                baseStats = await GameMaster.GetBaseStats(this.PokemonId.Value);
+                baseStats = await GameMaster.GetBaseStats(this.PokemonId.Value).ConfigureAwait(false);
             }).Wait();
 
             double cpMultiplier = GetCpMultiplier(this.Level.Value);
@@ -389,7 +389,7 @@ namespace PogoniumImporter
             };
             Task.Run(async () =>
             {
-                baseStats = await GameMaster.GetBaseStats(pokemon);
+                baseStats = await GameMaster.GetBaseStats(pokemon).ConfigureAwait(false);
             }).Wait();
 
             double cpMultiplier = GetCpMultiplier(level);
@@ -416,7 +416,7 @@ namespace PogoniumImporter
             };
             Task.Run(async () =>
             {
-                baseStats = await GameMaster.GetBaseStats(pokemon);
+                baseStats = await GameMaster.GetBaseStats(pokemon).ConfigureAwait(false);
             }).Wait();
             return ComputeHP(baseStats.BaseStamina + sta, cpMultiplier);
         }

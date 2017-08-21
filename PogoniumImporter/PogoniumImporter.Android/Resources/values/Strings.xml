@@ -26,4 +26,13 @@
   <string name="dialogProceed">Proceed</string>
   <string name="dialogCancel">Cancel</string>
   <string name="pleaseWait">Please wait </string>
+  <string name="updateTitle">PogoniumImporter Update</string>
+  <string name="updateMessage">A newer version of the app was found.</string>
+  <string name="updateView">View Releases</string>
+  <string name="updateClose">Close</string>
+  <string name="checkingGameMaster">Checking GameMaster</string>
+  <string name="parsingGameMaster">Parsing GameMaster</string>
+  <string name="savingGameMaster">Saving new GameMaster</string>
+  <string name="done">Done</string>
+  <string name="checkingForUpdates">Checking for updates</string>
 </resources>

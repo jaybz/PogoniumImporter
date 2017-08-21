@@ -51,21 +51,21 @@ namespace PogoniumImporter.PokemonDatabase
         public static async Task Initialize()
         {
             SQLiteAsyncConnection connection = GetConnection();
-            await connection.CreateTableAsync<Timestamp>();
-            await connection.CreateTableAsync<Pokemon>();
-            await connection.CreateTableAsync<Move>();
+            await connection.CreateTableAsync<Timestamp>().ConfigureAwait(false);
+            await connection.CreateTableAsync<Pokemon>().ConfigureAwait(false);
+            await connection.CreateTableAsync<Move>().ConfigureAwait(false);
         }
 
         public static async Task RefreshData(IProgress<int> progress = null)
         {
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(RetrieveUrl);
+            HttpResponseMessage response = await client.GetAsync(RetrieveUrl).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
-            string json = await response.Content.ReadAsStringAsync();
+            string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             JsonValue gameMaster = JsonValue.Parse(json);
 
             SQLiteAsyncConnection db = GetConnection();
-            Timestamp t = await db.Table<Timestamp>().OrderByDescending(timestamp => timestamp.TimestampMs).FirstOrDefaultAsync();
+            Timestamp t = await db.Table<Timestamp>().OrderByDescending(timestamp => timestamp.TimestampMs).FirstOrDefaultAsync().ConfigureAwait(false);
             long latest = t == null ? 0 : t.TimestampMs;
             long gameMasterTimestamp = long.Parse(gameMaster["timestampMs"]);
 
@@ -130,12 +130,12 @@ namespace PogoniumImporter.PokemonDatabase
                     TimestampMs = gameMasterTimestamp
                 };
 
-                await db.DeleteAllAsync<Pokemon>();
-                await db.DeleteAllAsync<Move>();
+                await db.DeleteAllAsync<Pokemon>().ConfigureAwait(false);
+                await db.DeleteAllAsync<Move>().ConfigureAwait(false);
 
-                await db.InsertAllAsync(moveList);
-                await db.InsertAllAsync(pokeList);
-                await db.InsertAsync(newTimeStamp);
+                await db.InsertAllAsync(moveList).ConfigureAwait(false);
+                await db.InsertAllAsync(pokeList).ConfigureAwait(false);
+                await db.InsertAsync(newTimeStamp).ConfigureAwait(false);
 
                 if (progress != null)
                     progress.Report(++current);

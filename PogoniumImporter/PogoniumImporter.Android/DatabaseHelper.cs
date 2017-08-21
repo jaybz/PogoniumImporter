@@ -14,7 +14,7 @@ namespace PogoniumImporter.Droid
         {
             Database.SetPlatform(new SQLitePlatformAndroidN());
             Database.SetPath(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-            await Database.Initialize();
+            await Database.Initialize().ConfigureAwait(false);
             DatabaseHelper.db = Database.GetConnection();
         }
 
@@ -25,7 +25,7 @@ namespace PogoniumImporter.Droid
 
         public static async Task RefreshData(IProgress<int> progress = null)
         {
-            await Database.RefreshData(progress);
+            await Database.RefreshData(progress).ConfigureAwait(false);
         }
     }
 }

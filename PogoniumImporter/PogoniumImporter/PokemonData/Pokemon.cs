@@ -35,7 +35,7 @@ namespace PogoniumImporter.PokemonData
 
                 Task.Run(async () =>
                 {
-                    moves = (await db.Table<Move>().Where(m => moveStrings.Contains(m.Name)).ToListAsync()).ToArray();
+                    moves = (await db.Table<Move>().Where(m => moveStrings.Contains(m.Name)).ToListAsync().ConfigureAwait(false)).ToArray();
                 }).Wait();
 
                 return moves;
@@ -61,7 +61,7 @@ namespace PogoniumImporter.PokemonData
 
                 Task.Run(async () =>
                 {
-                    moves = (await db.Table<Move>().Where(m => moveStrings.Contains(m.Name)).ToListAsync()).ToArray();
+                    moves = (await db.Table<Move>().Where(m => moveStrings.Contains(m.Name)).ToListAsync().ConfigureAwait(false)).ToArray();
                 }).Wait();
 
                 return moves;

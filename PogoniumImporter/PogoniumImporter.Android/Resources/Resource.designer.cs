@@ -3843,6 +3843,12 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f08003f
 			public const int chargeMove = 2131230783;
 			
+			// aapt resource value: 0x7f08004d
+			public const int checkingForUpdates = 2131230797;
+			
+			// aapt resource value: 0x7f080049
+			public const int checkingGameMaster = 2131230793;
+			
 			// aapt resource value: 0x7f080036
 			public const int def = 2131230774;
 			
@@ -3857,6 +3863,9 @@ namespace PogoniumImporter.Droid
 			
 			// aapt resource value: 0x7f080042
 			public const int dialogProceed = 2131230786;
+			
+			// aapt resource value: 0x7f08004c
+			public const int done = 2131230796;
 			
 			// aapt resource value: 0x7f080032
 			public const int importButton = 2131230770;
@@ -3878,6 +3887,9 @@ namespace PogoniumImporter.Droid
 			
 			// aapt resource value: 0x7f08002c
 			public const int notificationText = 2131230764;
+			
+			// aapt resource value: 0x7f08004a
+			public const int parsingGameMaster = 2131230794;
 			
 			// aapt resource value: 0x7f08002f
 			public const int passcodeHint = 2131230767;
@@ -3906,6 +3918,9 @@ namespace PogoniumImporter.Droid
 			// aapt resource value: 0x7f08003e
 			public const int quickMove = 2131230782;
 			
+			// aapt resource value: 0x7f08004b
+			public const int savingGameMaster = 2131230795;
+			
 			// aapt resource value: 0x7f080013
 			public const int search_menu_title = 2131230739;
 			
@@ -3920,6 +3935,18 @@ namespace PogoniumImporter.Droid
 			
 			// aapt resource value: 0x7f080014
 			public const int status_bar_notification_info_overflow = 2131230740;
+			
+			// aapt resource value: 0x7f080048
+			public const int updateClose = 2131230792;
+			
+			// aapt resource value: 0x7f080046
+			public const int updateMessage = 2131230790;
+			
+			// aapt resource value: 0x7f080045
+			public const int updateTitle = 2131230789;
+			
+			// aapt resource value: 0x7f080047
+			public const int updateView = 2131230791;
 			
 			// aapt resource value: 0x7f080039
 			public const int updatedPokemon = 2131230777;

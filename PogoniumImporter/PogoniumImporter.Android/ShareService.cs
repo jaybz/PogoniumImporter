@@ -59,7 +59,7 @@ namespace PogoniumImporter.Droid
             {
                 Task.Run(async () =>
                 {
-                    await DatabaseHelper.Initialize();
+                    await DatabaseHelper.Initialize().ConfigureAwait(false);
                 });
 
                 string json = intent.GetStringExtra("json") ?? string.Empty;
@@ -96,7 +96,7 @@ namespace PogoniumImporter.Droid
                 {
                     try
                     {
-                        await importedPokemon.RetrieveData(passcode);
+                        await importedPokemon.RetrieveData(passcode).ConfigureAwait(false);
                     }
                     catch (System.Exception e)
                     {
@@ -177,7 +177,7 @@ namespace PogoniumImporter.Droid
 
             Task.Run(async () =>
             {
-                pokemon = await GameMaster.GetPokemon(importedPokemon.PokemonId.Value);
+                pokemon = await GameMaster.GetPokemon(importedPokemon.PokemonId.Value).ConfigureAwait(false);
             }).Wait();
 
             foreach (Move move in pokemon.QuickMoves)
@@ -232,7 +232,7 @@ namespace PogoniumImporter.Droid
                     importedPokemon.Defense = int.Parse(defText.Text);
                     importedPokemon.Stamina = int.Parse(staText.Text);
 
-                    bool updated = await importedPokemon.Import(Helpers.Settings.PogoniumPasscode);
+                    bool updated = await importedPokemon.Import(Helpers.Settings.PogoniumPasscode).ConfigureAwait(false);
                     Toast.MakeText(this, Resources.GetString(updated ? Resource.String.updatedPokemon : Resource.String.addedPokemon), ToastLength.Short).Show();
                     StopSelf();
                 }
