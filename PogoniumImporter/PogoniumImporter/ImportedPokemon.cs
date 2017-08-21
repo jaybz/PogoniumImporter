@@ -26,8 +26,8 @@ namespace PogoniumImporter
         public int? CombatPower { get; set; }
         public int? HitPoints { get; set; }
 
-        public PokemonMove? QuickMove { get; set; }
-        public PokemonMove? ChargeMove { get; set; }
+        public Move QuickMove { get; set; }
+        public Move ChargeMove { get; set; }
 
         private JsonValue storedPokemon;
         private JsonValue existingPokemon;
@@ -71,13 +71,11 @@ namespace PogoniumImporter
             }
         }
 
-        public PokemonId? PokemonId
+        public int? PokemonId
         {
             get
             {
-                if (Id == null)
-                    return null;
-                return (PokemonId)Id;
+                return Id;
             }
         }
         
@@ -91,13 +89,18 @@ namespace PogoniumImporter
             {
                 if (jsonValue["PokemonId"].JsonType == JsonType.Number)
                 {
-                    this.Id = jsonValue["PokemonId"];
+                    int me = jsonValue["PokemonId"];
+                    this.Id = me;
 
-                    PokemonId me = (PokemonId)Id;
-                    this.Name = me.ToString();
-
-                    this.QuickMove = Pokemon.GetQuickMoves(me)[0];
-                    this.ChargeMove = Pokemon.GetChargeMoves(me)[0];
+                    Task.Run(async () =>
+                    {
+                        Pokemon pokemon = await GameMaster.GetPokemon(me);
+                        this.Name = pokemon.FriendlyName;
+                        Move[] qMoves = pokemon.QuickMoves;
+                        Move[] cMoves = pokemon.ChargeMoves;
+                        this.QuickMove = qMoves[0];
+                        this.ChargeMove = cMoves[0];
+                    }).Wait();
                 }
                 else
                 {
@@ -227,11 +230,11 @@ namespace PogoniumImporter
                 this.existingPokemon["defend"] = this.Defense;
                 this.existingPokemon["stamina"] = this.Stamina;
 
-                if (QuickMove.HasValue)
-                    this.existingPokemon["quickMove"] = Pokemon.GetMoveCode(QuickMove.Value);
+                if (QuickMove != null)
+                    this.existingPokemon["quickMove"] = QuickMove.CommonName;
 
-                if (ChargeMove.HasValue)
-                    this.existingPokemon["chargeMove"] = Pokemon.GetMoveCode(ChargeMove.Value);
+                if (ChargeMove != null)
+                    this.existingPokemon["chargeMove"] = ChargeMove.CommonName;
 
                 updated = true;
             }
@@ -247,11 +250,11 @@ namespace PogoniumImporter
                 newPokemon["defend"] = this.Defense;
                 newPokemon["stamina"] = this.Stamina;
 
-                if (QuickMove.HasValue)
-                    newPokemon["quickMove"] = Pokemon.GetMoveCode(QuickMove.Value);
+                if (QuickMove != null)
+                    newPokemon["quickMove"] = QuickMove.CommonName;
 
-                if (ChargeMove.HasValue)
-                    newPokemon["chargeMove"] = Pokemon.GetMoveCode(ChargeMove.Value);
+                if (ChargeMove != null)
+                    newPokemon["chargeMove"] = ChargeMove.CommonName;
 
                 ((JsonArray)storedPokemon["myPokemon"]).Add(newPokemon);
             }
@@ -296,12 +299,14 @@ namespace PogoniumImporter
                         if (pokemon.ContainsKey("name") && pokemon["name"].JsonType == JsonType.String)
                         {
                             this.Name = pokemon["name"];
-                            this.QuickMove = Pokemon.GetQuickMoves(PokemonId.Value).Where<PokemonMove>(
-                                    item => Pokemon.GetMoveCode(item) == pokemon["quickMove"]
-                                ).First<PokemonMove>();
-                            this.ChargeMove = Pokemon.GetChargeMoves(PokemonId.Value).Where<PokemonMove>(
-                                    item => Pokemon.GetMoveCode(item) == pokemon["chargeMove"]
-                                ).First<PokemonMove>();
+                            Task.Run(async () => {
+                                this.QuickMove = (await GameMaster.GetQuickMoves(PokemonId.Value)).First<Move>(
+                                        item => item.CommonName == pokemon["quickMove"]
+                                    );
+                                this.ChargeMove = (await GameMaster.GetChargeMoves(PokemonId.Value)).First<Move>(
+                                        item => item.CommonName == pokemon["chargeMove"]
+                                    );
+                            }).Wait();
                         }
                         break;
                     }
@@ -324,7 +329,15 @@ namespace PogoniumImporter
         {
             List<IvCombination> combinations = new List<IvCombination>();
 
-            var baseStats = Pokemon.GetBaseStats(this.PokemonId.Value);
+            var baseStats = new {
+                BaseAttack = -1,
+                BaseDefense = -1,
+                BaseStamina = -1
+            };
+            Task.Run(async () =>
+            {
+                baseStats = await GameMaster.GetBaseStats(this.PokemonId.Value);
+            }).Wait();
 
             double cpMultiplier = GetCpMultiplier(this.Level.Value);
             double cpMultiplier2 = Math.Pow(cpMultiplier, 2) / 10;
@@ -366,9 +379,18 @@ namespace PogoniumImporter
             return (int)System.Math.Round(((float)(atk + def + sta) * 100.0f) / 45.0f);
         }
 
-        public static int ComputeCP(PokemonId pokemon, int atk, int def, int sta, float level)
+        public static int ComputeCP(int pokemon, int atk, int def, int sta, float level)
         {
-            var baseStats = Pokemon.GetBaseStats(pokemon);
+            var baseStats = new
+            {
+                BaseAttack = -1,
+                BaseDefense = -1,
+                BaseStamina = -1
+            };
+            Task.Run(async () =>
+            {
+                baseStats = await GameMaster.GetBaseStats(pokemon);
+            }).Wait();
 
             double cpMultiplier = GetCpMultiplier(level);
             double cpMultiplier2 = Math.Pow(cpMultiplier, 2) / 10;
@@ -382,11 +404,20 @@ namespace PogoniumImporter
             return Math.Max((int)Math.Floor(totalAtk * Math.Sqrt(totalDef) * staMultiplier), 10);
         }
 
-        public static int ComputeHP(PokemonId pokemon, int sta, float level)
+        public static int ComputeHP(int pokemon, int sta, float level)
         {
             double cpMultiplier = GetCpMultiplier(level);
 
-            var baseStats = Pokemon.GetBaseStats(pokemon);
+            var baseStats = new
+            {
+                BaseAttack = -1,
+                BaseDefense = -1,
+                BaseStamina = -1
+            };
+            Task.Run(async () =>
+            {
+                baseStats = await GameMaster.GetBaseStats(pokemon);
+            }).Wait();
             return ComputeHP(baseStats.BaseStamina + sta, cpMultiplier);
         }
 

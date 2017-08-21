@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Provider;
+using System.Threading.Tasks;
 
 namespace PogoniumImporter.Droid
 {
@@ -88,6 +89,52 @@ namespace PogoniumImporter.Droid
                 StartActivity(shareIntent);
             };
 #endif
+            ProgressDialog progress = new ProgressDialog(this);
+            progress.Indeterminate = true;
+            progress.SetProgressStyle(ProgressDialogStyle.Horizontal);
+            progress.Max = 1;
+            progress.SetMessage("Checking GameMaster");
+            progress.SetCancelable(false);
+            progress.Show();
+
+            Task.Run(async () =>
+            {
+                int total = 0;
+
+                await DatabaseHelper.Initialize();
+                await DatabaseHelper.RefreshData(new Progress<int>((int status) =>
+                {
+                    RunOnUiThread(() =>
+                    {
+                        if(total == 0)
+                        {
+                            total = status;
+                            progress.Indeterminate = false;
+                            progress.Progress = 0;
+                            progress.Max = total;
+                            progress.SetMessage("Parsing GameMaster");
+                        }
+                        else if((total + 1) == status)
+                        {
+                            progress.Indeterminate = true;
+                            progress.SetMessage("Saving new GameMaster");
+                        }
+                        else if ((total + 2) == status)
+                        {
+                            progress.Indeterminate = true;
+                            progress.SetMessage("Done");
+                        }
+                        else
+                        {
+                            progress.Progress = status;
+                        }
+                    });
+                }));
+                RunOnUiThread(() =>
+                {
+                    progress.Dismiss();
+                });
+            });
         }
     }
 }

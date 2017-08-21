@@ -35,8 +35,8 @@ namespace PogoniumImporter.Droid
         private Button importButton, cancelButton;
         private ProgressBar processingBar;
         private ArrayAdapter<string> quickMoveAdapter, chargeMoveAdapter;
-        private Dictionary<string, PokemonMove> quickMoveDictionary = new Dictionary<string, PokemonMove>();
-        private Dictionary<string, PokemonMove> chargeMoveDictionary = new Dictionary<string, PokemonMove>();
+        private Dictionary<string, Move> quickMoveDictionary = new Dictionary<string, Move>();
+        private Dictionary<string, Move> chargeMoveDictionary = new Dictionary<string, Move>();
 
         private Intent intent;
 
@@ -57,6 +57,11 @@ namespace PogoniumImporter.Droid
             }
             else
             {
+                Task.Run(async () =>
+                {
+                    await DatabaseHelper.Initialize();
+                });
+
                 string json = intent.GetStringExtra("json") ?? string.Empty;
                 try
                 {
@@ -168,9 +173,16 @@ namespace PogoniumImporter.Droid
 
             List<string> quickMovesList = new List<string>();
             quickMoveDictionary.Clear();
-            foreach (PokemonMove move in Pokemon.GetQuickMoves(importedPokemon.PokemonId.Value))
+            Pokemon pokemon = null;
+
+            Task.Run(async () =>
             {
-                string moveName = Pokemon.GetMoveString(move);
+                pokemon = await GameMaster.GetPokemon(importedPokemon.PokemonId.Value);
+            }).Wait();
+
+            foreach (Move move in pokemon.QuickMoves)
+            {
+                string moveName = move.FriendlyName;
                 quickMoveDictionary.Add(moveName, move);
                 quickMovesList.Add(moveName);
             }
@@ -179,17 +191,17 @@ namespace PogoniumImporter.Droid
 
             List<string> chargeMovesList = new List<string>();
             chargeMoveDictionary.Clear();
-            foreach (PokemonMove move in Pokemon.GetChargeMoves(importedPokemon.PokemonId.Value))
+            foreach (Move move in pokemon.ChargeMoves)
             {
-                string moveName = Pokemon.GetMoveString(move);
+                string moveName = move.FriendlyName;
                 chargeMoveDictionary.Add(moveName, move);
                 chargeMovesList.Add(moveName);
             }
             chargeMoveAdapter.Clear();
             chargeMoveAdapter.AddAll(chargeMovesList);
 
-            chargeMoves.SetSelection(chargeMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.ChargeMove.Value)));
-            quickMoves.SetSelection(quickMoveAdapter.GetPosition(Pokemon.GetMoveString(importedPokemon.QuickMove.Value)));
+            chargeMoves.SetSelection(chargeMoveAdapter.GetPosition(importedPokemon.ChargeMove.FriendlyName));
+            quickMoves.SetSelection(quickMoveAdapter.GetPosition(importedPokemon.QuickMove.FriendlyName));
         }
 
         private void SetEventHandlers()
