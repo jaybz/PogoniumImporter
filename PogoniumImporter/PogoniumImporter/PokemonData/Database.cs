@@ -67,8 +67,9 @@ namespace PogoniumImporter.PokemonDatabase
             SQLiteAsyncConnection db = GetConnection();
             Timestamp t = await db.Table<Timestamp>().OrderByDescending(timestamp => timestamp.TimestampMs).FirstOrDefaultAsync();
             long latest = t == null ? 0 : t.TimestampMs;
+            long gameMasterTimestamp = long.Parse(gameMaster["timestampMs"]);
 
-            if (latest == 0 || latest < long.Parse(gameMaster["timestampMs"]))
+            if (latest == 0 || latest < gameMasterTimestamp)
             {
                 List<Move> moveList = new List<Move>();
                 List<Pokemon> pokeList = new List<Pokemon>();
@@ -124,11 +125,17 @@ namespace PogoniumImporter.PokemonDatabase
                 if (progress != null)
                     progress.Report(++current);
 
+                Timestamp newTimeStamp = new Timestamp()
+                {
+                    TimestampMs = gameMasterTimestamp
+                };
+
                 await db.DeleteAllAsync<Pokemon>();
                 await db.DeleteAllAsync<Move>();
 
                 await db.InsertAllAsync(moveList);
                 await db.InsertAllAsync(pokeList);
+                await db.InsertAsync(newTimeStamp);
 
                 if (progress != null)
                     progress.Report(++current);
