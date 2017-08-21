@@ -233,14 +233,23 @@ namespace PogoniumImporter.Droid
                     importedPokemon.Stamina = int.Parse(staText.Text);
 
                     bool updated = await importedPokemon.Import(Helpers.Settings.PogoniumPasscode).ConfigureAwait(false);
-                    Toast.MakeText(this, Resources.GetString(updated ? Resource.String.updatedPokemon : Resource.String.addedPokemon), ToastLength.Short).Show();
+                    mainThread.Post(() =>
+                    {
+                        Toast.MakeText(this, Resources.GetString(updated ? Resource.String.updatedPokemon : Resource.String.addedPokemon), ToastLength.Short).Show();
+                    });
                     StopSelf();
                 }
                 catch (System.Exception e)
                 {
-                    ShowAlert(Resource.String.importError, e.Message, (senderAlert, args) => { });
+                    mainThread.Post(() =>
+                    {
+                        ShowAlert(Resource.String.importError, e.Message, (senderAlert, args) => { });
+                    });
                 }
-                processingBar.Visibility = ViewStates.Gone;
+                mainThread.Post(() =>
+                {
+                    processingBar.Visibility = ViewStates.Gone;
+                });
             };
         }
 
